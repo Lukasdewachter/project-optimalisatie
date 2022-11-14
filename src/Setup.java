@@ -9,7 +9,7 @@ public class Setup {
         this.jobs = jobs;
         this.setup = new int[jobs.size()][jobs.size()];
     }
-    int setupTime(Job job1, Job job2){
+    public int setupTime(Job job1, Job job2){
         return setup[job1.getId()][job2.getId()];
     }
 }

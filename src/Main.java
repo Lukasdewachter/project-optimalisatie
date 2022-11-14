@@ -49,7 +49,9 @@ public class Main {
                 setups[i][j] = (int) s.getJSONArray(i).get(j);
             }
         }
-        Solution solution = new Solution(jobs, weightDuration);
-        double evaluation = solution.evaluate();
+        jobs.sort(Comparator.comparing(Job :: getReleaseDate));
+        Solution solution = new Solution(jobs, weightDuration, setups);
+        solution.firstSolution();
+        //double evaluation = solution.evaluate();
     }
 }

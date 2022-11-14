@@ -1,4 +1,4 @@
-public class Job {
+public class Job{
     private final int id;
     private final int duration;
     private final int releaseDate;
@@ -20,11 +20,11 @@ public class Job {
         return id;
     }
 
-    public void setStart(int start) {
+    public void setStart(long start) {
         this.start = start;
     }
 
-    public void setStop(int stop) {
+    public void setStop(long stop) {
         this.stop = stop;
     }
 
@@ -60,5 +60,6 @@ public class Job {
     public void print(){
         System.out.println("-------------------------------");
         System.out.println(id+ " "+ duration+" "+releaseDate+" "+dueDate+" "+earlinessPenalty+" "+rejectionPenalty);
+        System.out.println(start+" "+stop);
     }
 }
