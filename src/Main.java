@@ -56,5 +56,7 @@ public class Main {
         System.out.println("value: "+evaluation);
         System.out.println("Jobs: ");
         solution.print();
+        System.out.println("setups: ");
+        solution.printSetups();
     }
 }

@@ -9,12 +9,14 @@ public class Solution {
     double weightDuration;
     int[][] setups;
     Unavailability unavailability;
+    List<String>setupList;
     public Solution(ArrayList<Job> jobs, double weightDuration, int[][] setups, Unavailability unavailability){
         this.jobs=jobs;
         numberOfJobs = jobs.size();
         this.weightDuration=weightDuration;
         this.setups = setups;
         this.unavailability=unavailability;
+        setupList = new ArrayList<String>();
     }
 
     public double getWeightDuration() {
@@ -58,6 +60,7 @@ public class Solution {
         for(Job j : jobs){
             if(j.getDueDate() >= timeIndex + j.getDuration() + getSetupTime(j, lastJob) && !solution.contains(j)){
                 if(j.getReleaseDate() <= timeIndex && unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
+                    addSetup(timeIndex,lastJob,j);
                     timeIndex += getSetupTime(j, lastJob);
                     timeIndex = addJob(j, timeIndex);
                     lastJob = j;
@@ -88,6 +91,14 @@ public class Solution {
         job.setStop(timeIndex);
         solution.add(job);
         return timeIndex;
+    }
+    public void addSetup(long timeIndex, Job lastJob, Job currJob){
+        setupList.add("    from: "+lastJob.getId()+"\n"+"   to: "+currJob.getId()+"\n"+"    start: "+timeIndex);
+    }
+    public void printSetups(){
+        for(String s : setupList){
+            System.out.println(s);
+        }
     }
     public long getSetupTime(Job curJob, Job prevJob){
         return setups[curJob.getId()][prevJob.getId()];
