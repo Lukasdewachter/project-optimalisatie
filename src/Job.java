@@ -59,7 +59,7 @@ public class Job{
 
     public void print(){
         System.out.println("-------------------------------");
-        System.out.println(id+ " "+ duration+" "+releaseDate+" "+dueDate+" "+earlinessPenalty+" "+rejectionPenalty);
+        System.out.println("id: "+id+ " duration: "+ duration+" releaseD: "+releaseDate+" dueD: "+dueDate+" earlPen: "+earlinessPenalty+" rej: "+rejectionPenalty);
         System.out.println(start+" "+stop);
     }
 }
