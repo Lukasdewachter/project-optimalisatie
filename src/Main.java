@@ -18,7 +18,6 @@ public class Main {
         String name = object.getString("name");
         double weightDuration = object.getDouble("weight_duration");
         int horizon = object.getInt("horizon");
-        System.out.println("Test: "+name+", duration "+ weightDuration+", horizon: "+horizon);
         JSONArray jobsArray = object.getJSONArray("jobs");
         ArrayList<Job> jobs = new ArrayList<>();
         for (int i = 0; i<jobsArray.length();i++) {
@@ -53,6 +52,9 @@ public class Main {
         Solution solution = new Solution(jobs, weightDuration, setups, un);
         solution.firstSolution();
         double evaluation = solution.evaluate();
-        System.out.println("bks: "+evaluation);
+        System.out.println("name: " + name);
+        System.out.println("value: "+evaluation);
+        System.out.println("Jobs: ");
+        solution.print();
     }
 }

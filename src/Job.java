@@ -62,4 +62,7 @@ public class Job{
         System.out.println("id: "+id+ " duration: "+ duration+" releaseD: "+releaseDate+" dueD: "+dueDate+" earlPen: "+earlinessPenalty+" rej: "+rejectionPenalty);
         System.out.println(start+" "+stop);
     }
+    public void rPrint(){
+        System.out.println(id +" : "+start);
+    }
 }

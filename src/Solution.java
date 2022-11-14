@@ -81,10 +81,6 @@ public class Solution {
                 if(!solution.contains(j))notScheduledJobs.add(j);
             }
         }
-        System.out.println(solution.size()+" solution: ");
-        for(Job j : solution){j.print();}
-        System.out.println(notScheduledJobs.size()+ "not included: ");
-        for(Job j : notScheduledJobs){j.print();}
     }
     public long addJob(Job job, long timeIndex){
         job.setStart(timeIndex);
@@ -95,5 +91,11 @@ public class Solution {
     }
     public long getSetupTime(Job curJob, Job prevJob){
         return setups[curJob.getId()][prevJob.getId()];
+    }
+    public void print(){
+        for(Job j : solution){
+            System.out.println("    id: "+j.getId());
+            System.out.println("    start: "+j.getStart());
+        }
     }
 }
