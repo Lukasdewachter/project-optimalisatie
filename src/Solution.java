@@ -8,11 +8,13 @@ public class Solution {
     double bestCost;
     double weightDuration;
     int[][] setups;
-    public Solution(ArrayList<Job> jobs, double weightDuration, int[][] setups){
+    Unavailability unavailability;
+    public Solution(ArrayList<Job> jobs, double weightDuration, int[][] setups, Unavailability unavailability){
         this.jobs=jobs;
         numberOfJobs = jobs.size();
         this.weightDuration=weightDuration;
         this.setups = setups;
+        this.unavailability=unavailability;
     }
 
     public double getWeightDuration() {
@@ -32,13 +34,12 @@ public class Solution {
     //Weighted schedule duration + earliness penalty + penalty of rejected jobs
     public double evaluate(){
         double sum =0;
-
         //Weighted schedule duration
-        sum += weightDuration * solution.getLast().getStop();
+        sum += (weightDuration * solution.getLast().getStop())-solution.getFirst().getStart();
 
         //Earlines penalty
         for(int i=0; i<solution.size(); i++){
-            sum += solution.get(i).getEarlinessPenalty() * (solution.get(i).getDueDate()- solution.get(i).getStop()) ;
+            sum += solution.get(i).getEarlinessPenalty();
         }
 
         //Rejection penalty
@@ -55,20 +56,26 @@ public class Solution {
         timeIndex = addJob(firstJob, timeIndex);
         lastJob = firstJob;
         for(Job j : jobs){
-            if(j.getId()==14){
-                System.out.println("h");
-            }
             if(j.getDueDate() >= timeIndex + j.getDuration() + getSetupTime(j, lastJob) && !solution.contains(j)){
-                if(j.getReleaseDate() <= timeIndex){
+                if(j.getReleaseDate() <= timeIndex && unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
                     timeIndex += getSetupTime(j, lastJob);
                     timeIndex = addJob(j, timeIndex);
                     lastJob = j;
                 }
                 else{
                     timeIndex = j.getReleaseDate();
-                    timeIndex += getSetupTime(j, lastJob);
-                    timeIndex = addJob(j, timeIndex);
-                    lastJob = j;
+                    if(unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
+                        timeIndex += getSetupTime(j, lastJob);
+                        timeIndex = addJob(j, timeIndex);
+                        lastJob = j;
+                    }else{
+                        timeIndex = unavailability.skipUnavailable(timeIndex);
+                        timeIndex += getSetupTime(j, lastJob);
+                        timeIndex = addJob(j, timeIndex);
+                        lastJob = j;
+                    }
+                    
+                    
                 }
             }else{
                 if(!solution.contains(j))notScheduledJobs.add(j);

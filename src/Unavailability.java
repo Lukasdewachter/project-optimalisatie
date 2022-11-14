@@ -21,6 +21,21 @@ public class Unavailability {
         }
         return available;
     }
+    public long skipUnavailable(long timeIndex){
+        for(int i=(int)timeIndex; i<un.length;i++){
+            if(un[i]){
+                for(int j = i; j<un.length;j++){
+                    if(!un[j]){
+                        timeIndex = j;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return timeIndex;
+    }
+
     public void print(){
         int i = 0;
         for(Boolean b : un){

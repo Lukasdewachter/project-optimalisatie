@@ -50,8 +50,9 @@ public class Main {
             }
         }
         jobs.sort(Comparator.comparing(Job :: getReleaseDate));
-        Solution solution = new Solution(jobs, weightDuration, setups);
+        Solution solution = new Solution(jobs, weightDuration, setups, un);
         solution.firstSolution();
-        //double evaluation = solution.evaluate();
+        double evaluation = solution.evaluate();
+        System.out.println("bks: "+evaluation);
     }
 }
