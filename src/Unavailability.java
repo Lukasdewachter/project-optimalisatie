@@ -12,6 +12,7 @@ public class Unavailability {
         }
     }
     public Boolean checkAvailable(long start, long end) {
+        //checks if the range of time slots has unavailability
         boolean available = true;
         for (int i = (int) start; i <= end; i++) {
             if (un[i]) {
@@ -22,6 +23,7 @@ public class Unavailability {
         return available;
     }
     public long skipUnavailable(long timeIndex){
+        //skips to next available time
         for(int i=(int)timeIndex; i<un.length;i++){
             if(un[i]){
                 for(int j = i; j<un.length;j++){

@@ -58,8 +58,11 @@ public class Solution {
         timeIndex = addJob(firstJob, timeIndex);
         lastJob = firstJob;
         for(Job j : jobs){
+            //check if job can finish in time
             if(j.getDueDate() >= timeIndex + j.getDuration() + getSetupTime(j, lastJob) && !solution.contains(j)){
+                //check if job can start & check unavailability
                 if(j.getReleaseDate() <= timeIndex && unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
+                    //add job and setup
                     addSetup(timeIndex,lastJob,j);
                     timeIndex += getSetupTime(j, lastJob);
                     timeIndex = addJob(j, timeIndex);
@@ -67,12 +70,16 @@ public class Solution {
                 }
                 else{
                     timeIndex = j.getReleaseDate();
+                    //if job cannot start at this time we skip to its release date
                     if(unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
+                        addSetup(timeIndex,lastJob,j);
                         timeIndex += getSetupTime(j, lastJob);
                         timeIndex = addJob(j, timeIndex);
                         lastJob = j;
+                        //if job has unavailability we need to skip that first
                     }else{
                         timeIndex = unavailability.skipUnavailable(timeIndex);
+                        addSetup(timeIndex,lastJob,j);
                         timeIndex += getSetupTime(j, lastJob);
                         timeIndex = addJob(j, timeIndex);
                         lastJob = j;
@@ -81,11 +88,13 @@ public class Solution {
                     
                 }
             }else{
+                //job can't complete in time anymore
                 if(!solution.contains(j))notScheduledJobs.add(j);
             }
         }
     }
     public long addJob(Job job, long timeIndex){
+        //add job to solution
         job.setStart(timeIndex);
         timeIndex += job.getDuration();
         job.setStop(timeIndex);
@@ -93,6 +102,7 @@ public class Solution {
         return timeIndex;
     }
     public void addSetup(long timeIndex, Job lastJob, Job currJob){
+        //save setup change
         setupList.add("    from: "+lastJob.getId()+"\n"+"   to: "+currJob.getId()+"\n"+"    start: "+timeIndex);
     }
     public void printSetups(){

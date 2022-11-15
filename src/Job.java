@@ -49,6 +49,7 @@ public class Job{
     }
 
     public double getEarlinessPenalty() {
+        //returns the calculated earliness penalty
         double penalty = getDueDate() - getStop();
         return earlinessPenalty*penalty;
     }
