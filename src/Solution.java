@@ -37,7 +37,7 @@ public class Solution {
     public double evaluate(){
         double sum =0;
         //Weighted schedule duration
-        sum += (weightDuration * solution.getLast().getStop())-solution.getFirst().getStart();
+        sum += (weightDuration * (solution.getLast().getStop()-solution.getFirst().getStart()));
 
         //Earlines penalty
         for(int i=0; i<solution.size(); i++){
@@ -51,6 +51,7 @@ public class Solution {
         return sum;
     }
     public void firstSolution(){
+        Collections.sort(jobs, Comparator.comparing(Job::getDueDate));
         Job lastJob;
         int currIndex = 0;
         Job firstJob = jobs.get(currIndex);
