@@ -5,11 +5,17 @@ public class Solution {
     LinkedList<Job> solution = new LinkedList<>();
     LinkedList<Job> notScheduledJobs = new LinkedList<>();
     ArrayList<Job> jobs= new ArrayList<>();
-    double bestCost;
+    double cost;
     double weightDuration;
     int[][] setups;
     Unavailability unavailability;
     List<String>setupList;
+
+    // Na heuristiek
+    LinkedList<Job> bestSolution = new LinkedList<>();
+    LinkedList<Job> bestNotScheduledJobs = new LinkedList<>();
+    double bestCost;
+
     public Solution(ArrayList<Job> jobs, double weightDuration, int[][] setups, Unavailability unavailability){
         this.jobs=jobs;
         numberOfJobs = jobs.size();
@@ -25,9 +31,6 @@ public class Solution {
 
     // Function to schedule the jobs take 2 arguments
     // arraylist and no of jobs to schedule
-    public void printJobScheduling(ArrayList<Job> jobs) {
-
-    }
     public boolean isScheduled(Job job){
         if (solution.contains(job)){
             return true;
@@ -35,20 +38,19 @@ public class Solution {
     }
     //Weighted schedule duration + earliness penalty + penalty of rejected jobs
     public double evaluate(){
-        double sum =0;
         //Weighted schedule duration
-        sum += (weightDuration * (solution.getLast().getStop()-solution.getFirst().getStart()));
+        cost += (weightDuration * (solution.getLast().getStop()-solution.getFirst().getStart()));
 
         //Earlines penalty
         for(int i=0; i<solution.size(); i++){
-            sum += solution.get(i).getEarlinessPenalty();
+            cost += solution.get(i).getEarlinessPenalty();
         }
 
         //Rejection penalty
         for(int i=0; i< notScheduledJobs.size();i++){
-            sum+=notScheduledJobs.get(i).getRejectionPenalty();
+            cost+=notScheduledJobs.get(i).getRejectionPenalty();
         }
-        return sum;
+        return cost;
     }
     public void firstSolution(){
         Collections.sort(jobs, Comparator.comparing(Job::getDueDate));
@@ -93,6 +95,9 @@ public class Solution {
                 if(!solution.contains(j))notScheduledJobs.add(j);
             }
         }
+    }
+    public void bestSolution(){
+
     }
     public long addJob(Job job, long timeIndex){
         //add job to solution
