@@ -55,7 +55,7 @@ public class Solution {
         Job lastJob;
         int currIndex = 0;
         Job firstJob = jobs.get(currIndex);
-        long timeIndex=firstJob.getReleaseDate();
+        int timeIndex=firstJob.getReleaseDate();
         timeIndex = addJob(firstJob, timeIndex);
         lastJob = firstJob;
         for(Job j : jobs){
@@ -95,7 +95,7 @@ public class Solution {
         }
         return this.solution;
     }
-    public long addJob(Job job, long timeIndex){
+    public int addJob(Job job, int timeIndex){
         //add job to solution
         job.setStart(timeIndex);
         timeIndex += job.getDuration();
@@ -103,7 +103,7 @@ public class Solution {
         solution.add(job);
         return timeIndex;
     }
-    public void addSetup(long timeIndex, Job lastJob, Job currJob){
+    public void addSetup(int timeIndex, Job lastJob, Job currJob){
         //save setup change
         SetupChange setupChange = new SetupChange(lastJob,currJob,(int)timeIndex);
         setupList.add(setupChange);
@@ -112,7 +112,7 @@ public class Solution {
     public List<SetupChange> getSetupList() {
         return setupList;
     }
-    public long getSetupTime(Job curJob, Job prevJob){
+    public int getSetupTime(Job curJob, Job prevJob){
         return setups[curJob.getId()][prevJob.getId()];
     }
     public void print(){

@@ -2,18 +2,18 @@ import java.util.Arrays;
 
 public class Unavailability {
     private Boolean[] un;
-    public Unavailability(long horizon){
+    public Unavailability(int horizon){
         un = new Boolean[(int)horizon];
         Arrays.fill(un, false);
     }
-    public void addUnavailable(long start, long end){
-        for(long i=start; i<= end;i++){
+    public void addUnavailable(int start, int end){
+        for(int i=start; i<= end;i++){
             if(i<un.length){
                 un[(int)i] = true;
             }else break;
         }
     }
-    public Boolean checkAvailable(long start, long end) {
+    public Boolean checkAvailable(int start, int end) {
         //checks if the range of time slots has unavailability
         boolean available = true;
         for (int i = (int) start; i <= end; i++) {
@@ -24,7 +24,7 @@ public class Unavailability {
         }
         return available;
     }
-    public long skipUnavailable(long timeIndex){
+    public int skipUnavailable(int timeIndex){
         //skips to next available time
         for(int i=(int)timeIndex; i<un.length;i++){
             if(un[i]){
