@@ -52,16 +52,6 @@ public class Main {
         List<Job>firstSolution = solution.firstSolution();
         double evaluation = solution.evaluate();
         JSONObject finalSolution = new JSONObject();
-        JSONArray array = new JSONArray();
-        for(Job job : firstSolution){
-            JSONObject jsonJob = new JSONObject();
-            jsonJob.put("id",job.getId());
-            jsonJob.put("start",job.getStart());
-            array.put(jsonJob);
-        }
-        finalSolution.put("name",name);
-        finalSolution.put("value",evaluation);
-        finalSolution.put("jobs",array);
         JSONArray jsonSetups = new JSONArray();
         List<SetupChange>setupChanges = solution.getSetupList();
         for(SetupChange setupChange : setupChanges){
@@ -72,8 +62,20 @@ public class Main {
             jsonSetups.put(jsonSetup);
         }
         finalSolution.put("setups",jsonSetups);
+        JSONArray array = new JSONArray();
+        for(Job job : firstSolution){
+            JSONObject jsonJob = new JSONObject();
+            jsonJob.put("id",job.getId());
+            jsonJob.put("start",job.getStart());
+            array.put(jsonJob);
+        }
+        finalSolution.put("jobs",array);
+        finalSolution.put("name",name);
+        finalSolution.put("value",evaluation);
+
+
         FileWriter fw = new FileWriter("./IO/solution.json");
-        fw.write(finalSolution.toString());
+        fw.write(finalSolution.toString(4));
         fw.flush();
         System.out.println("Jobs: ");
         solution.print();
