@@ -48,7 +48,6 @@ public class Main {
                 setups[i][j] = (int) s.getJSONArray(i).get(j);
             }
         }
-        jobs.sort(Comparator.comparing(Job :: getReleaseDate));
         Solution solution = new Solution(jobs, weightDuration, setups, un);
         List<Job>firstSolution = solution.firstSolution();
         double evaluation = solution.evaluate();
