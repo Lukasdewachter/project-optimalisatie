@@ -9,14 +9,14 @@ public class Solution {
     double weightDuration;
     int[][] setups;
     Unavailability unavailability;
-    List<String>setupList;
+    List<SetupChange>setupList;
     public Solution(ArrayList<Job> jobs, double weightDuration, int[][] setups, Unavailability unavailability){
         this.jobs=jobs;
         numberOfJobs = jobs.size();
         this.weightDuration=weightDuration;
         this.setups = setups;
         this.unavailability=unavailability;
-        setupList = new ArrayList<String>();
+        setupList = new ArrayList<SetupChange>();
     }
 
     public double getWeightDuration() {
@@ -50,7 +50,7 @@ public class Solution {
         }
         return sum;
     }
-    public void firstSolution(){
+    public List<Job> firstSolution(){
         Collections.sort(jobs, Comparator.comparing(Job::getDueDate));
         Job lastJob;
         int currIndex = 0;
@@ -93,6 +93,7 @@ public class Solution {
                 if(!solution.contains(j))notScheduledJobs.add(j);
             }
         }
+        return this.solution;
     }
     public long addJob(Job job, long timeIndex){
         //add job to solution
@@ -104,12 +105,12 @@ public class Solution {
     }
     public void addSetup(long timeIndex, Job lastJob, Job currJob){
         //save setup change
-        setupList.add("    from: "+lastJob.getId()+"\n"+"   to: "+currJob.getId()+"\n"+"    start: "+timeIndex);
+        SetupChange setupChange = new SetupChange(lastJob,currJob,(int)timeIndex);
+        setupList.add(setupChange);
     }
-    public void printSetups(){
-        for(String s : setupList){
-            System.out.println(s);
-        }
+
+    public List<SetupChange> getSetupList() {
+        return setupList;
     }
     public long getSetupTime(Job curJob, Job prevJob){
         return setups[curJob.getId()][prevJob.getId()];

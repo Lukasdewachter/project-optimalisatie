@@ -8,7 +8,9 @@ public class Unavailability {
     }
     public void addUnavailable(long start, long end){
         for(long i=start; i<= end;i++){
-            un[(int)i] = true;
+            if(i<un.length){
+                un[(int)i] = true;
+            }else break;
         }
     }
     public Boolean checkAvailable(long start, long end) {
