@@ -6,9 +6,11 @@ public class Unavailability {
         un = new Boolean[horizon+1];
         Arrays.fill(un, false);
     }
-    public void addUnavailable(int start, int end){
-        for(int i=12950; i<end;i++){
-            un[i] = true;
+    public void addUnavailable(int start, int end) {
+        for (int i = 0; i < end; i++) {
+            if (i < un.length) {
+                un[i] = true;
+            }
         }
     }
     public Boolean checkAvailable(long start, long end) {
