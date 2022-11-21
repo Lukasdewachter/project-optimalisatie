@@ -12,7 +12,7 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Object obj = new JSONParser().parse(new FileReader("./IO/TOY-20-10.json"));
+        Object obj = new JSONParser().parse(new FileReader("./IO/B-400-90.json"));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -74,11 +74,10 @@ public class Main {
         finalSolution.put("value",evaluation);
 
 
-        FileWriter fw = new FileWriter("./IO/solution.json");
+        FileWriter fw = new FileWriter("./IO/solution-"+name+".json");
         fw.write(finalSolution.toString(4));
         fw.flush();
-        System.out.println("Jobs: ");
-        solution.print();
-        System.out.println("setups: ");
+        //System.out.println("Jobs: ");
+        //solution.print();
     }
 }

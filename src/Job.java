@@ -48,10 +48,10 @@ public class Job{
         return dueDate;
     }
 
-    public double getEarlinessPenalty() {
+    public float getEarlinessPenalty() {
         //returns the calculated earliness penalty
-        double penalty = getDueDate() - getStop();
-        return earlinessPenalty*penalty;
+        float time = getDueDate() - getStop()+1;
+        return time * this.earlinessPenalty;
     }
 
     public double getRejectionPenalty() {

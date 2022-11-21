@@ -38,12 +38,10 @@ public class Solution {
         double sum =0;
         //Weighted schedule duration
         sum += (weightDuration * (solution.getLast().getStop()-solution.getFirst().getStart()));
-
         //Earlines penalty
-        for(int i=0; i<solution.size(); i++){
-            sum += solution.get(i).getEarlinessPenalty();
+        for(Job j : solution){
+            sum += j.getEarlinessPenalty();
         }
-
         //Rejection penalty
         for(int i=0; i< notScheduledJobs.size();i++){
             sum+=notScheduledJobs.get(i).getRejectionPenalty();
@@ -51,14 +49,16 @@ public class Solution {
         return sum;
     }
     public List<Job> firstSolution(){
-        Collections.sort(jobs, Comparator.comparing(Job::getDueDate));
+        Collections.sort(jobs, Comparator.comparing(Job::getReleaseDate));
         Job lastJob;
-        int currIndex = 0;
-        Job firstJob = jobs.get(currIndex);
+        Job firstJob = jobs.get(0);
         int timeIndex=firstJob.getReleaseDate();
         timeIndex = addJob(firstJob, timeIndex);
         lastJob = firstJob;
         for(Job j : jobs){
+            if(j.getId()==140){
+                System.out.println("h");
+            }
             //check if job can finish in time
             if(j.getDueDate() >= timeIndex + j.getDuration() + getSetupTime(j, lastJob) && !solution.contains(j)){
                 //check if job can start & check unavailability
@@ -70,7 +70,9 @@ public class Solution {
                     lastJob = j;
                 }
                 else{
-                    timeIndex = j.getReleaseDate();
+                    if(j.getReleaseDate()>timeIndex){
+                        timeIndex = j.getReleaseDate();
+                    }
                     //if job cannot start at this time we skip to its release date
                     if(unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
                         addSetup(timeIndex,lastJob,j);
@@ -80,10 +82,14 @@ public class Solution {
                         //if job has unavailability we need to skip that first
                     }else{
                         timeIndex = unavailability.skipUnavailable(timeIndex);
-                        addSetup(timeIndex,lastJob,j);
-                        timeIndex += getSetupTime(j, lastJob);
-                        timeIndex = addJob(j, timeIndex);
-                        lastJob = j;
+                        if(j.getDueDate() >= timeIndex + j.getDuration() + getSetupTime(j, lastJob) && !solution.contains(j)&&unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
+                            addSetup(timeIndex,lastJob,j);
+                            timeIndex += getSetupTime(j, lastJob);
+                            timeIndex = addJob(j, timeIndex);
+                            lastJob = j;
+                        }else{
+                            if(!solution.contains(j))notScheduledJobs.add(j);
+                        }
                     }
                     
                     
@@ -113,12 +119,6 @@ public class Solution {
         return setupList;
     }
     public int getSetupTime(Job curJob, Job prevJob){
-        return setups[curJob.getId()][prevJob.getId()];
-    }
-    public void print(){
-        for(Job j : solution){
-            System.out.println("    id: "+j.getId());
-            System.out.println("    start: "+j.getStart());
-        }
+        return setups[prevJob.getId()][curJob.getId()];
     }
 }
