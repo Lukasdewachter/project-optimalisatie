@@ -8,12 +8,12 @@ public class Unavailability {
     }
     public void addUnavailable(int start, int end) {
         for (int i = 0; i < end; i++) {
-            if (i < un.length) {
+            if (i <= un.length) {
                 un[i] = true;
             }
         }
     }
-    public Boolean checkAvailable(long start, long end) {
+    public Boolean checkAvailable(int start, int end) {
         //checks if the range of time slots has unavailability
         boolean available = true;
         for (int i = (int) start; i <= end; i++) {
@@ -24,7 +24,7 @@ public class Unavailability {
         }
         return available;
     }
-    public long skipUnavailable(long timeIndex){
+    public int skipUnavailable(int timeIndex){
         //skips to next available time
         for(int i=(int)timeIndex; i<un.length;i++){
             if(un[i]){

@@ -6,7 +6,7 @@ public class Job{
     private final float earlinessPenalty;
     private final float rejectionPenalty;
 
-    private long start=0, stop=0;
+    private int start=0, stop=0;
     public Job(int id, int duration, int releaseDate, int dueDate, float earlinessPenalty, float rejectionPenalty){
         this.id = id;
         this.duration = duration;
@@ -20,31 +20,31 @@ public class Job{
         return id;
     }
 
-    public void setStart(long start) {
+    public void setStart(int start) {
         this.start = start;
     }
 
-    public void setStop(long stop) {
+    public void setStop(int stop) {
         this.stop = stop;
     }
 
-    public long getStart() {
+    public int getStart() {
         return start;
     }
 
-    public long getStop() {
+    public int getStop() {
         return stop;
     }
 
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public long getReleaseDate() {
+    public int getReleaseDate() {
         return releaseDate;
     }
 
-    public long getDueDate() {
+    public int getDueDate() {
         return dueDate;
     }
 
