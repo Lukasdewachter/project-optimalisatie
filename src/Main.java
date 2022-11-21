@@ -51,8 +51,13 @@ public class Main {
         Solution solution = new Solution(jobs, weightDuration, setups, un);
         solution.firstSolution();
         double evaluation = solution.evaluate();
-        System.out.println("name: " + name);
-        System.out.println("value: "+evaluation);
+        JSONObject finalSolution = new JSONObject();
+        JSONArray array = new JSONArray();
+        finalSolution.put("name",name);
+        finalSolution.put("value",evaluation);
+        FileWriter fw = new FileWriter("solution.json");
+        fw.write(finalSolution.toString());
+        fw.flush();
         System.out.println("Jobs: ");
         solution.print();
         System.out.println("setups: ");
