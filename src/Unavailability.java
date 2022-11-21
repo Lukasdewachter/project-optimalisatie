@@ -2,13 +2,13 @@ import java.util.Arrays;
 
 public class Unavailability {
     private Boolean[] un;
-    public Unavailability(long horizon){
-        un = new Boolean[(int)horizon];
+    public Unavailability(int horizon){
+        un = new Boolean[horizon+1];
         Arrays.fill(un, false);
     }
-    public void addUnavailable(long start, long end){
-        for(long i=start; i<= end;i++){
-            un[(int)i] = true;
+    public void addUnavailable(int start, int end){
+        for(int i=12950; i<end;i++){
+            un[i] = true;
         }
     }
     public Boolean checkAvailable(long start, long end) {

@@ -12,7 +12,7 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Object obj = new JSONParser().parse(new FileReader("./IO/A-100-30.json"));
+        Object obj = new JSONParser().parse(new FileReader("./IO/A-400-90.json"));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -48,7 +48,6 @@ public class Main {
                 setups[i][j] = (int) s.getJSONArray(i).get(j);
             }
         }
-        jobs.sort(Comparator.comparing(Job :: getReleaseDate));
         Solution solution = new Solution(jobs, weightDuration, setups, un);
         solution.firstSolution();
         double evaluation = solution.evaluate();
