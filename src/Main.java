@@ -12,7 +12,7 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Object obj = new JSONParser().parse(new FileReader("./IO/B-400-90.json"));
+        Object obj = new JSONParser().parse(new FileReader("./IO/A-400-90.json"));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -51,6 +51,9 @@ public class Main {
         Solution solution = new Solution(jobs, weightDuration, setups, un);
         List<Job>firstSolution = solution.firstSolution();
         double evaluation = solution.evaluate();
+        SimulatedAnnealing sa = new SimulatedAnnealing(solution);
+        sa.optimizeSA();
+        solution.setSolution(sa.getBestSolutionSchedule());
         JSONObject finalSolution = new JSONObject();
         JSONArray jsonSetups = new JSONArray();
         List<SetupChange>setupChanges = solution.getSetupList();

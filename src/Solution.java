@@ -49,7 +49,7 @@ public class Solution {
         return sum;
     }
     public List<Job> firstSolution(){
-        Collections.sort(jobs, Comparator.comparing(Job::getReleaseDate));
+        Collections.sort(jobs, Comparator.comparing(Job::getDueDate));
         Job lastJob;
         Job firstJob = jobs.get(0);
         int timeIndex=firstJob.getReleaseDate();
@@ -120,5 +120,18 @@ public class Solution {
     }
     public int getSetupTime(Job curJob, Job prevJob){
         return setups[prevJob.getId()][curJob.getId()];
+    }
+    // methodes voor SA
+    public Solution(Solution copy) {
+        this.solution = copy.solution; // you can access
+        this.jobs=copy.jobs;
+        numberOfJobs = copy.jobs.size();
+        this.weightDuration= copy.weightDuration;
+        this.setups = copy.setups;
+        this.unavailability=copy.unavailability;
+        setupList = new ArrayList<SetupChange>();
+    }
+    public void setSolution(LinkedList<Job> solution) {
+        this.solution = solution;
     }
 }
