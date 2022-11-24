@@ -1,58 +1,130 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SimulatedAnnealing {
-    int numberOfJobs;
-    LinkedList<Job> notScheduledJobs = new LinkedList<>();
-    ArrayList<Job> jobs= new ArrayList<>();
-    double weightDuration;
-    int[][] setups;
-    Unavailability unavailability;
-    List<SetupChange>setupList;
-
     Solution currentSolution;
-    LinkedList<Job> currentSolutionSchedule = new LinkedList<>();
-    LinkedList<Job> bestSolutionSchedule = new LinkedList<>();
-    public SimulatedAnnealing(Solution s){
-        this.currentSolution=s;
-        this.currentSolutionSchedule=s.solution;
-        this.jobs=s.jobs;
-        numberOfJobs = s.jobs.size();
-        this.weightDuration=s.weightDuration;
-        this.setups = s.setups;
-        this.unavailability= s.unavailability;
-        setupList = s.setupList;
-        notScheduledJobs = s.notScheduledJobs;
+
+    public SimulatedAnnealing(Solution currentSolution) {
+        this.currentSolution = currentSolution;
     }
+
+    //kans voor accepteren van nieuwe oplossing bij optimizeSA()
     public static double probability(double f1, double f2, double temp) {
         if (f2 < f1) return 1;
         return Math.exp((f1 - f2) / temp);
     }
-    public List<Job> optimizeSA(){
-        double temperature = 1000;
-        double coolingFactor = 0.995;
 
+    public Solution optimizeSA() {
+        // Parameters voor SA
+        double temperature = 100;
+        double coolingFactor = 0.99;
+
+        // t *= coolingFactor => geometric reduction rule
+        Solution bestSolution = new Solution(currentSolution);
         for (double t = temperature; t > 1; t *= coolingFactor) {
             Solution neighbor = new Solution(currentSolution);
 
-            int index1 = (int) (neighbor.solution.size() * Math.random());
-            int index2 = (int) (neighbor.solution.size() * Math.random());
-
-            Collections.swap(neighbor.solution, index1, index2);
-
-            if (Math.random() < probability(neighbor.evaluate(), currentSolution.evaluate(), t)) {
-                currentSolutionSchedule = neighbor.solution;
+            // Random twee indexen selecteren tussen index 0 en index lenght of solution,
+            Random r = new Random();
+            int index1 = r.nextInt(neighbor.solution.size()-1);
+            int index2 = index1 + 1;
+            if (index1 < 2) {
+                continue;
             }
-            if (neighbor.evaluate() < currentSolution.evaluate()) {
-                bestSolutionSchedule=currentSolutionSchedule;
+
+            //All jobs before the swap remain, the jobs after the swap get removed for new schedule
+            //Idem for setup
+            // FOR EXAMPLE:
+            // Solution: J1 J3 J2 | J4 J5 J6
+            // Setup: J1-J3, J3-J2, | J2-J4, J4-J5, J5-6
+            // to delete every job after J4, you start at index i
+            // To delete every setup after setup of j4, you start at index-1
+
+            Job currentJob = neighbor.solution.get(index2);
+            Job lastJob = neighbor.solution.get(index1 - 1);
+            int timeIndex = neighbor.solution.get(index2).getReleaseDate();
+            //delete jobs after index1 including index1 from solution
+            neighbor.solution.subList(index1 - 1, neighbor.solution.size()).clear();
+            //empty not scheduled jobs
+            neighbor.notScheduledJobs.clear();
+            //delete setups after index1-1 from setup list
+            neighbor.setupList.subList(index1 - 2, neighbor.setupList.size()).clear();
+
+
+            //----Optimization by swapping neigbours at index i----
+            //Jobs at index i and index i+1 get swapped if possible
+            timeIndex = addJob(currentJob, timeIndex, neighbor);
+            lastJob = currentJob;
+            for (Job j : neighbor.jobs) {
+                //check if job can finish in time
+                if (j.getDueDate() >= timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob) && !neighbor.solution.contains(j)) {
+                    //check if job can start & check unavailability
+                    if (j.getReleaseDate() <= timeIndex && neighbor.unavailability.checkAvailable(timeIndex, timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob))) {
+                        //add job and setup
+                        addSetup(timeIndex, lastJob, j, neighbor);
+                        timeIndex += neighbor.getSetupTime(j, lastJob);
+                        timeIndex = addJob(j, timeIndex, neighbor);
+                        lastJob = j;
+                    } else {
+                        if (j.getReleaseDate() > timeIndex) {
+                            timeIndex = j.getReleaseDate();
+                        }
+                        //if job cannot start at this time we skip to its release date
+                        if (neighbor.unavailability.checkAvailable(timeIndex, timeIndex + j.getDuration() + getSetupTime(j, lastJob, neighbor))) {
+                            addSetup(timeIndex, lastJob, j, neighbor);
+                            timeIndex += neighbor.getSetupTime(j, lastJob);
+                            timeIndex = addJob(j, timeIndex,neighbor);
+                            lastJob = j;
+                            //if job has unavailability we need to skip that first
+                        } else {
+                            timeIndex = neighbor.unavailability.skipUnavailable(timeIndex);
+                            if (j.getDueDate() >= timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob) && !neighbor.solution.contains(j) && neighbor.unavailability.checkAvailable(timeIndex, timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob))) {
+                                addSetup(timeIndex, lastJob, j, neighbor);
+                                timeIndex += getSetupTime(j, lastJob, neighbor);
+                                timeIndex = addJob(j, timeIndex, neighbor);
+                                lastJob = j;
+                            } else {
+                                if (!neighbor.solution.contains(j)) neighbor.notScheduledJobs.add(j);
+                            }
+                        }
+
+
+                    }
+                } else {
+                    //job can't complete in time anymore
+                    if (!neighbor.solution.contains(j)) neighbor.notScheduledJobs.add(j);
+                }
+            }
+            if (Math.random() < probability(neighbor.evaluate(), currentSolution.evaluate(), t)) {
+                currentSolution.solution = neighbor.solution;
+            }
+            if (bestSolution.evaluate() < currentSolution.evaluate()) {
+                bestSolution.solution=currentSolution.solution;
             }
         }
-        return bestSolutionSchedule;
+        return bestSolution;
+    }
+    private int addJob (Job job,int timeIndex, Solution s){
+        //add job to solution
+        job.setStart(timeIndex);
+        timeIndex += job.getDuration();
+        job.setStop(timeIndex);
+        s.solution.add(job);
+        return timeIndex;
+    }
+    private void removeJob ( int i, Solution s){
+        s.solution.remove(i);
+    }
+    private void removeSetup ( int i, Solution s){
+        s.getSetupList().remove(i);
+    }
+    public int getSetupTime (Job curJob, Job prevJob, Solution solution){
+        return solution.setups[prevJob.getId()][curJob.getId()];
+    }
+    public void addSetup( int timeIndex, Job lastJob, Job currJob, Solution s){
+        //save setup change
+        SetupChange setupChange = new SetupChange(lastJob, currJob, (int) timeIndex);
+        s.setupList.add(setupChange);
     }
 
-    public LinkedList<Job> getBestSolutionSchedule() {
-        return bestSolutionSchedule;
-    }
 }
+

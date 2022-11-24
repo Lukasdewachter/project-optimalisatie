@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Solution{
@@ -5,12 +6,12 @@ public class Solution{
     LinkedList<Job> solution = new LinkedList<>();
     LinkedList<Job> notScheduledJobs = new LinkedList<>();
     ArrayList<Job> jobs= new ArrayList<>();
-    double bestCost;
-    double weightDuration;
+    float bestCost;
+    float weightDuration;
     int[][] setups;
     Unavailability unavailability;
     List<SetupChange>setupList;
-    public Solution(ArrayList<Job> jobs, double weightDuration, int[][] setups, Unavailability unavailability){
+    public Solution(ArrayList<Job> jobs, float weightDuration, int[][] setups, Unavailability unavailability){
         super();
         this.jobs=jobs;
         numberOfJobs = jobs.size();
@@ -20,7 +21,7 @@ public class Solution{
         setupList = new ArrayList<SetupChange>();
     }
 
-    public double getWeightDuration() {
+    public float getWeightDuration() {
         return weightDuration;
     }
 
@@ -35,18 +36,25 @@ public class Solution{
         } else return false;
     }
     //Weighted schedule duration + earliness penalty + penalty of rejected jobs
-    public double evaluate(){
-        double sum =0;
+    public float evaluate(){
+        float sum =0;
         //Weighted schedule duration
         sum += (weightDuration * (solution.getLast().getStop()-solution.getFirst().getStart()));
+        float weightedSum = sum;
+        System.out.println("Weighted: "+weightedSum);
         //Earlines penalty
         for(Job j : solution){
             sum += j.getEarlinessPenalty();
         }
+        float earlinesSum = sum-weightedSum;
+        System.out.println("Earliness: "+ earlinesSum);
         //Rejection penalty
         for(int i=0; i< notScheduledJobs.size();i++){
             sum+=notScheduledJobs.get(i).getRejectionPenalty();
         }
+        float rejectionSum = sum-earlinesSum-weightedSum;
+        System.out.println("Rejection: " + rejectionSum);
+        System.out.println("Total sum of evaluation function is " + sum);
         return sum;
     }
     public List<Job> firstSolution(){
@@ -54,7 +62,8 @@ public class Solution{
         Job lastJob;
         Job firstJob = jobs.get(0);
         int timeIndex=firstJob.getReleaseDate();
-        timeIndex = addJob(firstJob, timeIndex);
+        addJob(firstJob, timeIndex);
+        timeIndex += firstJob.getDuration();
         lastJob = firstJob;
         for(Job j : jobs){
             //check if job can finish in time
@@ -64,7 +73,8 @@ public class Solution{
                     //add job and setup
                     addSetup(timeIndex,lastJob,j);
                     timeIndex += getSetupTime(j, lastJob);
-                    timeIndex = addJob(j, timeIndex);
+                    addJob(j, timeIndex);
+                    timeIndex += j.getDuration();
                     lastJob = j;
                 }
                 else{
@@ -75,7 +85,8 @@ public class Solution{
                     if(unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
                         addSetup(timeIndex,lastJob,j);
                         timeIndex += getSetupTime(j, lastJob);
-                        timeIndex = addJob(j, timeIndex);
+                        addJob(j, timeIndex);
+                        timeIndex += j.getDuration();
                         lastJob = j;
                         //if job has unavailability we need to skip that first
                     }else{
@@ -83,7 +94,8 @@ public class Solution{
                         if(j.getDueDate() >= timeIndex + j.getDuration() + getSetupTime(j, lastJob) && !solution.contains(j)&&unavailability.checkAvailable(timeIndex,timeIndex+j.getDuration()+getSetupTime(j, lastJob))){
                             addSetup(timeIndex,lastJob,j);
                             timeIndex += getSetupTime(j, lastJob);
-                            timeIndex = addJob(j, timeIndex);
+                            addJob(j, timeIndex);
+                            timeIndex += j.getDuration();
                             lastJob = j;
                         }else{
                             if(!solution.contains(j))notScheduledJobs.add(j);
@@ -99,17 +111,16 @@ public class Solution{
         }
         return this.solution;
     }
-    public int addJob(Job job, int timeIndex){
+    public void addJob(Job job, int timeIndex){
         //add job to solution
         job.setStart(timeIndex);
         timeIndex += job.getDuration();
         job.setStop(timeIndex);
         solution.add(job);
-        return timeIndex;
     }
     public void addSetup(int timeIndex, Job lastJob, Job currJob){
         //save setup change
-        SetupChange setupChange = new SetupChange(lastJob,currJob,(int)timeIndex);
+        SetupChange setupChange = new SetupChange(lastJob,currJob,timeIndex);
         setupList.add(setupChange);
     }
 
@@ -132,6 +143,6 @@ public class Solution{
         this.weightDuration= copy.weightDuration;
         this.setups = copy.setups;
         this.unavailability=copy.unavailability;
-        this.setupList = new LinkedList<SetupChange>(copy.setupList); //deep copy
+        this.setupList = new LinkedList<SetupChange>(copy.getSetupList()); //deep copy
     }
 }

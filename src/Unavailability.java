@@ -3,13 +3,13 @@ import java.util.Arrays;
 public class Unavailability {
     private Boolean[] un;
     public Unavailability(int horizon){
-        un = new Boolean[(int)horizon];
+        un = new Boolean[horizon];
         Arrays.fill(un, false);
     }
     public void addUnavailable(int start, int end){
         for(int i=start; i<= end;i++){
             if(i<un.length){
-                un[(int)i] = true;
+                un[i] = true;
             }else break;
         }
     }
@@ -26,7 +26,7 @@ public class Unavailability {
     }
     public int skipUnavailable(int timeIndex){
         //skips to next available time
-        for(int i=(int)timeIndex; i<un.length;i++){
+        for(int i=timeIndex; i<un.length;i++){
             if(un[i]){
                 for(int j = i; j<un.length;j++){
                     if(!un[j]){

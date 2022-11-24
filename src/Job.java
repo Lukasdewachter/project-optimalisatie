@@ -54,7 +54,7 @@ public class Job{
         return time * this.earlinessPenalty;
     }
 
-    public double getRejectionPenalty() {
+    public float getRejectionPenalty() {
         return rejectionPenalty;
     }
 
