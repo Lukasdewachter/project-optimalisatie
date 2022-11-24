@@ -20,11 +20,11 @@ public class Job{
         return id;
     }
 
-    public void setStart(int start) {
+    public void setStart(Integer start) {
         this.start = start;
     }
 
-    public void setStop(int stop) {
+    public void setStop(Integer stop) {
         this.stop = stop;
     }
 

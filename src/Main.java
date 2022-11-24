@@ -51,7 +51,7 @@ public class Main {
         Solution solution = new Solution(jobs, weightDuration, setups, un);
         List<Job>firstSolution = solution.firstSolution();
         SimulatedAnnealing sa = new SimulatedAnnealing(solution);
-        //solution = sa.optimizeSA();
+        solution = sa.optimizeSA();
         float evaluation = solution.evaluate();
 
         JSONObject finalSolution = new JSONObject();
