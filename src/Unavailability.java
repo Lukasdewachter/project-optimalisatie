@@ -16,10 +16,10 @@ public class Unavailability {
     public Boolean checkAvailable(int start, int end) {
         //checks if the range of time slots has unavailability
         boolean available = true;
-        for (int i = (int) start; i <= end; i++) {
+        for (int i = start; i < end; i++) {
             if (un[i]) {
                 available = false;
-                break;
+                continue;
             }
         }
         return available;

@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Solution {
+public class Solution{
     int numberOfJobs;
     LinkedList<Job> solution = new LinkedList<>();
     LinkedList<Job> notScheduledJobs = new LinkedList<>();
@@ -11,6 +11,7 @@ public class Solution {
     Unavailability unavailability;
     List<SetupChange>setupList;
     public Solution(ArrayList<Job> jobs, double weightDuration, int[][] setups, Unavailability unavailability){
+        super();
         this.jobs=jobs;
         numberOfJobs = jobs.size();
         this.weightDuration=weightDuration;
@@ -56,9 +57,6 @@ public class Solution {
         timeIndex = addJob(firstJob, timeIndex);
         lastJob = firstJob;
         for(Job j : jobs){
-            if(j.getId()==140){
-                System.out.println("h");
-            }
             //check if job can finish in time
             if(j.getDueDate() >= timeIndex + j.getDuration() + getSetupTime(j, lastJob) && !solution.contains(j)){
                 //check if job can start & check unavailability
@@ -115,6 +113,11 @@ public class Solution {
         setupList.add(setupChange);
     }
 
+    public LinkedList<Job> getSolution() {
+        return solution;
+    }
+
+
     public List<SetupChange> getSetupList() {
         return setupList;
     }
@@ -123,15 +126,12 @@ public class Solution {
     }
     // methodes voor SA
     public Solution(Solution copy) {
-        this.solution = copy.solution; // you can access
+        this.solution = new LinkedList<Job>(copy.solution); // deep copy
         this.jobs=copy.jobs;
-        numberOfJobs = copy.jobs.size();
+        this.numberOfJobs = copy.jobs.size();
         this.weightDuration= copy.weightDuration;
         this.setups = copy.setups;
         this.unavailability=copy.unavailability;
-        setupList = new ArrayList<SetupChange>();
-    }
-    public void setSolution(LinkedList<Job> solution) {
-        this.solution = solution;
+        this.setupList = new LinkedList<SetupChange>(copy.setupList); //deep copy
     }
 }
