@@ -12,14 +12,14 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Object obj = new JSONParser().parse(new FileReader("./IO/A-100-30.json"));
+        Object obj = new JSONParser().parse(new FileReader("./IO/TOY-20-10.json"));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
         float weightDuration = object.getFloat("weight_duration");
         int horizon = object.getInt("horizon");
         JSONArray jobsArray = object.getJSONArray("jobs");
-        ArrayList<Job> jobs = new ArrayList<>();
+        LinkedList<Job> jobs = new LinkedList<>();
         for (int i = 0; i<jobsArray.length();i++) {
             JSONObject temp = jobsArray.getJSONObject(i);
             int id = temp.getInt("id");
@@ -49,11 +49,24 @@ public class Main {
             }
         }
         Solution solution = new Solution(jobs, weightDuration, setups, un);
-        List<Job>firstSolution = solution.firstSolution();
-        SimulatedAnnealing sa = new SimulatedAnnealing(solution);
-        solution = sa.optimizeSA();
-        float evaluation = solution.evaluate();
-
+        LinkedList<Job>firstSolution = (LinkedList<Job>) solution.firstSolution();
+        LinkedList<Job>deepestDescend = solution.deepestDescend(firstSolution);
+        //SimulatedAnnealing sa = new SimulatedAnnealing(solution);
+        //solution = sa.optimizeSA();
+        LinkedList<Job>algorithm = deepestDescend;
+        List<List<Job>>orders = new LinkedList<>();
+        double evaluation=0;
+        for (int i = 0; i < jobs.size() - 1; i++) {
+            LinkedList<Job> curJobOrder = new LinkedList<>(List.copyOf(jobs));
+            Collections.swap(curJobOrder, i, i + 1);
+            solution.clearProject(curJobOrder);
+            LinkedList<Job>curSolution = (LinkedList<Job>)solution.firstSolution();
+            evaluation = solution.evaluate(curSolution);
+            System.out.println(evaluation);
+        }
+        for(Job j : algorithm){
+            j.print();
+        }
         JSONObject finalSolution = new JSONObject();
         JSONArray jsonSetups = new JSONArray();
         List<SetupChange>setupChanges = solution.getSetupList();
@@ -66,7 +79,7 @@ public class Main {
         }
         finalSolution.put("setups",jsonSetups);
         JSONArray array = new JSONArray();
-        for(Job job : firstSolution){
+        for(Job job : algorithm){
             JSONObject jsonJob = new JSONObject();
             jsonJob.put("id",job.getId());
             jsonJob.put("start",job.getStart());

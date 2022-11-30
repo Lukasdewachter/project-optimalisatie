@@ -1,22 +1,22 @@
 {
     "setups": [
         {
-            "start": 54,
+            "start": 96,
             "from": 12,
             "to": 6
         },
         {
-            "start": 88,
+            "start": 130,
             "from": 6,
             "to": 3
         },
         {
-            "start": 123,
+            "start": 165,
             "from": 3,
             "to": 13
         },
         {
-            "start": 155,
+            "start": 197,
             "from": 13,
             "to": 11
         },
@@ -88,57 +88,57 @@
         {
             "start": 1293,
             "from": 15,
-            "to": 14
+            "to": 17
         },
         {
-            "start": 1301,
-            "from": 14,
-            "to": 17
+            "start": 1303,
+            "from": 17,
+            "to": 14
         }
     ],
     "jobs": [
         {
-            "start": 0,
+            "start": 42,
             "id": 12
         },
         {
-            "start": 175,
+            "start": 101,
             "id": 6
         },
         {
-            "start": 268,
+            "start": 136,
             "id": 3
         },
         {
-            "start": 301,
+            "start": 169,
             "id": 13
         },
         {
-            "start": 418,
+            "start": 202,
             "id": 11
         },
         {
-            "start": 491,
+            "start": 311,
             "id": 9
         },
         {
-            "start": 524,
+            "start": 344,
             "id": 1
         },
         {
-            "start": 565,
+            "start": 554,
             "id": 0
         },
         {
-            "start": 608,
+            "start": 597,
             "id": 18
         },
         {
-            "start": 629,
+            "start": 618,
             "id": 5
         },
         {
-            "start": 671,
+            "start": 660,
             "id": 2
         },
         {
@@ -166,18 +166,18 @@
             "id": 4
         },
         {
-            "start": 1293,
+            "start": 1252,
             "id": 15
         },
         {
-            "start": 1338,
+            "start": 1306,
             "id": 14
         },
         {
-            "start": 1345,
+            "start": 1299,
             "id": 17
         }
     ],
     "name": "TOY-20-10",
-    "value": 8297.604016393423
+    "value": 8320.7724609375
 }
