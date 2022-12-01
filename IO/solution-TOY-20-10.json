@@ -1,110 +1,87 @@
 {
     "setups": [
         {
-            "start": 96,
-            "from": 12,
-            "to": 6
-        },
-        {
-            "start": 130,
-            "from": 6,
-            "to": 3
-        },
-        {
-            "start": 165,
+            "start": 348,
             "from": 3,
             "to": 13
         },
         {
-            "start": 197,
+            "start": 380,
             "from": 13,
             "to": 11
         },
         {
-            "start": 309,
+            "start": 427,
             "from": 11,
             "to": 9
         },
         {
-            "start": 340,
+            "start": 458,
             "from": 9,
             "to": 1
         },
         {
-            "start": 552,
+            "start": 0,
             "from": 1,
-            "to": 0
+            "to": 12
         },
         {
-            "start": 592,
-            "from": 0,
-            "to": 18
-        },
-        {
-            "start": 613,
-            "from": 18,
-            "to": 5
-        },
-        {
-            "start": 656,
-            "from": 5,
-            "to": 2
+            "start": 0,
+            "from": 12,
+            "to": 6
         },
         {
             "start": 1009,
-            "from": 2,
-            "to": 19
+            "from": 6,
+            "to": 18
         },
         {
-            "start": 1065,
-            "from": 19,
+            "start": 1032,
+            "from": 18,
+            "to": 2
+        },
+        {
+            "start": 1068,
+            "from": 2,
             "to": 8
         },
         {
-            "start": 1096,
+            "start": 1100,
             "from": 8,
             "to": 16
         },
         {
-            "start": 1154,
+            "start": 1158,
             "from": 16,
             "to": 7
         },
         {
-            "start": 1200,
+            "start": 1204,
             "from": 7,
             "to": 10
         },
         {
-            "start": 1224,
+            "start": 1228,
             "from": 10,
             "to": 4
         },
         {
-            "start": 1246,
+            "start": 1250,
             "from": 4,
             "to": 15
         },
         {
-            "start": 1293,
+            "start": 1297,
             "from": 15,
-            "to": 17
+            "to": 14
         },
         {
-            "start": 1303,
-            "from": 17,
-            "to": 14
+            "start": 1305,
+            "from": 14,
+            "to": 17
         }
     ],
     "jobs": [
-        {
-            "start": 42,
-            "id": 12
-        },
-        {
-            "start": 101,
-            "id": 6
-        },
         {
             "start": 136,
             "id": 3
@@ -118,66 +95,62 @@
             "id": 11
         },
         {
-            "start": 311,
+            "start": 781,
             "id": 9
         },
         {
-            "start": 344,
+            "start": 873,
             "id": 1
         },
         {
-            "start": 554,
-            "id": 0
+            "start": 42,
+            "id": 12
         },
         {
-            "start": 597,
+            "start": 101,
+            "id": 6
+        },
+        {
+            "start": 1014,
             "id": 18
         },
         {
-            "start": 618,
-            "id": 5
-        },
-        {
-            "start": 660,
+            "start": 1047,
             "id": 2
         },
         {
-            "start": 1013,
-            "id": 19
-        },
-        {
-            "start": 1069,
+            "start": 1079,
             "id": 8
         },
         {
-            "start": 1101,
+            "start": 1111,
             "id": 16
         },
         {
-            "start": 1159,
+            "start": 1169,
             "id": 7
         },
         {
-            "start": 1204,
+            "start": 1214,
             "id": 10
         },
         {
-            "start": 1226,
+            "start": 1236,
             "id": 4
         },
         {
-            "start": 1252,
+            "start": 1262,
             "id": 15
         },
         {
-            "start": 1306,
+            "start": 1307,
             "id": 14
         },
         {
-            "start": 1299,
+            "start": 1314,
             "id": 17
         }
     ],
     "name": "TOY-20-10",
-    "value": 8320.7724609375
+    "value": 13215.861930638552
 }

@@ -5,6 +5,7 @@ public class Solution{
     //LinkedList<Job> solutionJobs = new LinkedList<>();
     LinkedList<Job> notScheduledJobs = new LinkedList<>();
     LinkedList<Job> jobs= new LinkedList<>();
+    LinkedList<Job> bestSol= new LinkedList<>();
     float bestCost;
     float weightDuration;
     int[][] setups;
@@ -117,9 +118,11 @@ public class Solution{
 
     public LinkedList<Job> deepestDescend(LinkedList<Job> jobOrder){
         int timeIndex=0;
+        LinkedList<Job>jobList = jobOrder;
         LinkedList<Job> bestSolution = new LinkedList<>(List.copyOf(jobOrder));
+
         List<SetupChange>bestSetup = new LinkedList<>(List.copyOf(setupList));
-        double bestCost = shortEvaluate(jobOrder);
+        double bestCost = Double.MAX_VALUE;
         List<LinkedList<Job>>orders = new ArrayList<>();
         jobOrder.addAll(notScheduledJobs);
         Collections.sort(jobOrder, Comparator.comparing(Job::getDueDate));
@@ -142,6 +145,10 @@ public class Solution{
                 Job lastJob = firstJob;
                 for (int i = 1; i < curJobOrder.size(); i++) {
                     Job job = curJobOrder.get(i);
+                    if(count == 141 && job.getId() == 20){
+
+                        System.out.println("");
+                    }
                     int setupTime = getSetupTime(job, lastJob);
                     int jobTime = job.getDuration();
                     int dueDate = job.getDueDate();
@@ -153,8 +160,8 @@ public class Solution{
                     if (job.getReleaseDate() < timeIndex + setupTime) {
                         if (unavailability.checkAvailable(timeIndex, timeIndex + setupTime + jobTime)) {
                             if (timeIndex + jobTime + setupTime < dueDate) {
-                                addSetup(timeIndex, lastJob, job);
-                                timeIndex += setupTime;
+                                addSetup(dueDate-jobTime-setupTime, lastJob, job);
+                                timeIndex = dueDate-jobTime;
                                 solution = addJob(job, timeIndex, solution);
                                 timeIndex += jobTime;
                                 lastJob = job;
@@ -164,8 +171,8 @@ public class Solution{
                         } else {
                             timeIndex = unavailability.skipUnavailable(timeIndex);
                             if (timeIndex + jobTime + setupTime < dueDate) {
-                                addSetup(timeIndex, lastJob, job);
-                                timeIndex += setupTime;
+                                addSetup(dueDate-jobTime-setupTime, lastJob, job);
+                                timeIndex = dueDate-jobTime;
                                 solution = addJob(job, timeIndex, solution);
                                 timeIndex += jobTime;
                                 lastJob = job;
@@ -180,8 +187,8 @@ public class Solution{
                         }
                         if(unavailability.checkAvailable(releaseDate,releaseDate+setupTime+jobTime)){
                             if (timeIndex + jobTime + setupTime < dueDate) {
-                                addSetup(timeIndex, lastJob, job);
-                                timeIndex += setupTime;
+                                addSetup(dueDate-jobTime-setupTime, lastJob, job);
+                                timeIndex = dueDate-jobTime;
                                 solution = addJob(job, timeIndex, solution);
                                 timeIndex += jobTime;
                                 lastJob = job;
@@ -191,8 +198,8 @@ public class Solution{
                         }else {
                             timeIndex = unavailability.skipUnavailable(timeIndex);
                             if (timeIndex + jobTime + setupTime < dueDate) {
-                                addSetup(timeIndex, lastJob, job);
-                                timeIndex += setupTime;
+                                addSetup(dueDate-jobTime-setupTime, lastJob, job);
+                                timeIndex = dueDate-jobTime;
                                 solution = addJob(job, timeIndex, solution);
                                 timeIndex += jobTime;
                                 lastJob = job;
@@ -204,10 +211,17 @@ public class Solution{
                     }
 
                 }
-                if (shortEvaluate(solution) < bestCost) {
-                    bestSolution = solution;
-                    bestSetup = this.setupList;
-                    evaluate(bestSolution);
+
+                double test = shortEvaluate(bestSolution);
+                double test2 = shortEvaluate(solution);
+                if(k==1 && count ==141){
+                    return solution;
+                }
+                if (test2 < bestCost) {
+                    bestCost = shortEvaluate(solution);
+                    bestSetup = List.copyOf(this.setupList);
+                    double test3 = evaluate(bestSolution);
+                    setBestSolution(solution);
                     System.out.println("BETTER SOLUTION FOUND "+count);
                     jobOrder = solution;
                 }
@@ -215,12 +229,21 @@ public class Solution{
             }
             k++;
         }
-        this.setupList = bestSetup;
-        return bestSolution;
+        this.setupList = List.copyOf(bestSetup);
+        return bestSol;
     }
 
 
-
+    public void setBestSolution(LinkedList<Job>solution){
+        this.bestSol = solution;
+    }
+    public LinkedList<Job> getJobList(LinkedList<Job>opls){
+        opls.addAll(notScheduledJobs);
+        return opls;
+    }
+    public LinkedList<Job> getBestSol() {
+        return bestSol;
+    }
 
     public LinkedList<Job> addJob(Job job, int timeIndex, LinkedList<Job>solutionJobs){
         //add job to solution
