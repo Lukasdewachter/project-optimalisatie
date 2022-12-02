@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Setup {
-    ArrayList<Job> jobs;
+    LinkedList<Job> jobs;
     int[][] setup;
     Job j1;
     Job j2;
-    public Setup(ArrayList<Job> jobs){
+    public Setup(LinkedList<Job> jobs){
         this.jobs = jobs;
         this.setup = new int[jobs.size()][jobs.size()];
     }

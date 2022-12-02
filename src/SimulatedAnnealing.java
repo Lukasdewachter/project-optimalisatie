@@ -1,4 +1,4 @@
-import java.util.*;
+/*import java.util.*;
 
 public class SimulatedAnnealing {
     Solution currentSolution;
@@ -25,7 +25,7 @@ public class SimulatedAnnealing {
 
             // Random twee indexen selecteren tussen index 0 en index lenght of solution,
             Random r = new Random();
-            int index1 = r.nextInt(neighbor.solution.size()-1);
+            int index1 = r.nextInt(neighbor.solutionJobs.size()-1);
             int index2 = index1 + 1;
             if (index1 < 2) {
                 continue;
@@ -39,13 +39,13 @@ public class SimulatedAnnealing {
             // to delete every job after J4, you start at index i
             // To delete every setup after setup of j4, you start at index-1
 
-            Job currentJob = neighbor.solution.get(index2);
-            Job lastJob = neighbor.solution.get(index1 - 1);
+            Job currentJob = neighbor.solutionJobs.get(index2);
+            Job lastJob = neighbor.solutionJobs.get(index1 - 1);
 
 
             int timeIndex = lastJob.getStop();
             //delete jobs after index1 including index1 from solution
-            neighbor.solution.subList(index1 - 1, neighbor.solution.size()).clear();
+            neighbor.solutionJobs.subList(index1 - 1, neighbor.solutionJobs.size()).clear();
             //empty not scheduled jobs
             neighbor.notScheduledJobs.clear();
             //delete setups after index1-1 from setup list
@@ -60,7 +60,7 @@ public class SimulatedAnnealing {
             lastJob = currentJob;
             for (Job j : neighbor.jobs) {
                 //check if job can finish in time
-                if (j.getDueDate() >= timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob) && !neighbor.solution.contains(j)) {
+                if (j.getDueDate() >= timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob) && !neighbor.solutionJobs.contains(j)) {
                     //check if job can start & check unavailability
                     if (j.getReleaseDate() <= timeIndex && neighbor.unavailability.checkAvailable(timeIndex, timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob))) {
                         //add job and setup
@@ -83,14 +83,14 @@ public class SimulatedAnnealing {
                             //if job has unavailability we need to skip that first
                         } else {
                             timeIndex = neighbor.unavailability.skipUnavailable(timeIndex);
-                            if (j.getDueDate() >= timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob) && !neighbor.solution.contains(j) && neighbor.unavailability.checkAvailable(timeIndex, timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob))) {
+                            if (j.getDueDate() >= timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob) && !neighbor.solutionJobs.contains(j) && neighbor.unavailability.checkAvailable(timeIndex, timeIndex + j.getDuration() + neighbor.getSetupTime(j, lastJob))) {
                                 addSetup(timeIndex, lastJob, j, neighbor);
                                 timeIndex += getSetupTime(j, lastJob, neighbor);
                                 addJob(j, timeIndex, neighbor);
                                 timeIndex+=j.getDuration();
                                 lastJob = j;
                             } else {
-                                if (!neighbor.solution.contains(j)) neighbor.notScheduledJobs.add(j);
+                                if (!neighbor.solutionJobs.contains(j)) neighbor.notScheduledJobs.add(j);
                             }
                         }
 
@@ -98,14 +98,14 @@ public class SimulatedAnnealing {
                     }
                 } else {
                     //job can't complete in time anymore
-                    if (!neighbor.solution.contains(j)) neighbor.notScheduledJobs.add(j);
+                    if (!neighbor.solutionJobs.contains(j)) neighbor.notScheduledJobs.add(j);
                 }
             }
             if (Math.random() < probability(neighbor.evaluate(), currentSolution.evaluate(), t)) {
-                currentSolution.solution = neighbor.solution;
+                currentSolution.solutionJobs = neighbor.solutionJobs;
             }
             if (bestSolution.evaluate() < currentSolution.evaluate()) {
-                bestSolution.solution=currentSolution.solution;
+                bestSolution.solutionJobs =currentSolution.solutionJobs;
             }
         }
         return bestSolution;
@@ -115,7 +115,7 @@ public class SimulatedAnnealing {
         job.setStart(timeIndex);
         timeIndex += job.getDuration();
         job.setStop(timeIndex);
-        s.solution.add(job);
+        s.solutionJobs.add(job);
     }
     public int getSetupTime (Job curJob, Job prevJob, Solution solution){
         return solution.setups[prevJob.getId()][curJob.getId()];
@@ -127,4 +127,4 @@ public class SimulatedAnnealing {
     }
 
 }
-
+*/

@@ -17,9 +17,11 @@ public class Unavailability {
         //checks if the range of time slots has unavailability
         boolean available = true;
         for (int i = start; i < end; i++) {
+            if(i>=un.length){
+                break;
+            }
             if (un[i]) {
                 available = false;
-                continue;
             }
         }
         return available;
