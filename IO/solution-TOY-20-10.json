@@ -1,87 +1,85 @@
 {
     "setups": [
         {
-            "start": 348,
-            "from": 3,
-            "to": 13
-        },
-        {
-            "start": 380,
-            "from": 13,
-            "to": 11
-        },
-        {
-            "start": 427,
-            "from": 11,
-            "to": 9
-        },
-        {
-            "start": 458,
-            "from": 9,
-            "to": 1
-        },
-        {
-            "start": 0,
-            "from": 1,
-            "to": 12
-        },
-        {
-            "start": 0,
+            "start": 96,
             "from": 12,
             "to": 6
         },
         {
-            "start": 1009,
+            "start": 130,
             "from": 6,
+            "to": 3
+        },
+        {
+            "start": 165,
+            "from": 3,
+            "to": 13
+        },
+        {
+            "start": 197,
+            "from": 13,
+            "to": 11
+        },
+        {
+            "start": 1009,
+            "from": 11,
             "to": 18
         },
         {
-            "start": 1032,
+            "start": 1030,
             "from": 18,
             "to": 2
         },
         {
-            "start": 1068,
+            "start": 1066,
             "from": 2,
             "to": 8
         },
         {
-            "start": 1100,
+            "start": 1098,
             "from": 8,
             "to": 16
         },
         {
-            "start": 1158,
+            "start": 1156,
             "from": 16,
             "to": 7
         },
         {
-            "start": 1204,
+            "start": 1202,
             "from": 7,
             "to": 10
         },
         {
-            "start": 1228,
+            "start": 1226,
             "from": 10,
             "to": 4
         },
         {
-            "start": 1250,
+            "start": 1248,
             "from": 4,
             "to": 15
         },
         {
-            "start": 1297,
+            "start": 1295,
             "from": 15,
             "to": 14
         },
         {
-            "start": 1305,
+            "start": 1303,
             "from": 14,
             "to": 17
         }
     ],
     "jobs": [
+        {
+            "start": 42,
+            "id": 12
+        },
+        {
+            "start": 101,
+            "id": 6
+        },
         {
             "start": 136,
             "id": 3
@@ -95,62 +93,46 @@
             "id": 11
         },
         {
-            "start": 781,
-            "id": 9
-        },
-        {
-            "start": 873,
-            "id": 1
-        },
-        {
-            "start": 42,
-            "id": 12
-        },
-        {
-            "start": 101,
-            "id": 6
-        },
-        {
             "start": 1014,
             "id": 18
         },
         {
-            "start": 1047,
+            "start": 1037,
             "id": 2
         },
         {
-            "start": 1079,
+            "start": 1071,
             "id": 8
         },
         {
-            "start": 1111,
+            "start": 1103,
             "id": 16
         },
         {
-            "start": 1169,
+            "start": 1161,
             "id": 7
         },
         {
-            "start": 1214,
+            "start": 1206,
             "id": 10
         },
         {
-            "start": 1236,
+            "start": 1228,
             "id": 4
         },
         {
-            "start": 1262,
+            "start": 1254,
             "id": 15
         },
         {
-            "start": 1307,
+            "start": 1299,
             "id": 14
         },
         {
-            "start": 1314,
+            "start": 1306,
             "id": 17
         }
     ],
     "name": "TOY-20-10",
-    "value": 13215.861930638552
+    "value": 12505.46503034234
 }

@@ -12,7 +12,7 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Object obj = new JSONParser().parse(new FileReader("./IO/A-100-30.json"));
+        Object obj = new JSONParser().parse(new FileReader("./IO/B-400-90.json"));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -52,42 +52,14 @@ public class Main {
         LinkedList<Job>firstSolution = (LinkedList<Job>) solution.firstSolution();
         LinkedList<Job>jobList = solution.getJobList(firstSolution);
         LocalSearch ls = new LocalSearch(jobList, setups, un, weightDuration);
-        int bestCost=Integer.MAX_VALUE;
-        for(int i=0; i<50;i++){
-            double cost = ls.deepestDescend(jobList);
-            if(cost < bestCost){
-                LinkedList<Job>algorithm = ls.getBestSolution();
-                double evaluation=ls.evaluate(algorithm);
-                JSONObject finalSolution = new JSONObject();
-                JSONArray jsonSetups = new JSONArray();
-                List<SetupChange>setupChanges = ls.getBestSetupList();
-                for(SetupChange setupChange : setupChanges){
-                    JSONObject jsonSetup = new JSONObject();
-                    jsonSetup.put("from",setupChange.getJ1().getId());
-                    jsonSetup.put("to",setupChange.getJ2().getId());
-                    jsonSetup.put("start",setupChange.getStart());
-                    jsonSetups.put(jsonSetup);
-                }
-                finalSolution.put("setups",jsonSetups);
-                JSONArray array = new JSONArray();
-                for(Job job : algorithm){
-                    JSONObject jsonJob = new JSONObject();
-                    jsonJob.put("id",job.getId());
-                    jsonJob.put("start",job.getStart());
-                    array.put(jsonJob);
-                }
-                finalSolution.put("jobs",array);
-                finalSolution.put("name",name);
-                finalSolution.put("value",evaluation);
-
-
-                FileWriter fw = new FileWriter("./IO/solution-"+name+".json");
-                fw.write(finalSolution.toString(4));
-                fw.flush();
-            }
-        }
-
-
+        ls.deepestDescend(jobList);
+        JSONObject finalSolution = ls.getJSONFormat();
+        double evaluation=ls.getBestCost();
+        finalSolution.put("name",name);
+        finalSolution.put("value",evaluation);
+        FileWriter fw = new FileWriter("./IO/solution-"+name+".json");
+        fw.write(finalSolution.toString(4));
+        fw.flush();
         //System.out.println("Jobs: ");
         //solution.print();
     }

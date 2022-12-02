@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.sound.sampled.Line;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +14,7 @@ public class LocalSearch {
     private double bestCost, weightDuration;
     private Unavailability un;
     private int timeIndex, totalJobs;
+    private JSONObject JSONSolution;
 
     public LocalSearch(LinkedList<Job>jobs,int[][]setups, Unavailability un, double weightDuration){
         this.notScheduled= new LinkedList<>(List.copyOf(jobs));
@@ -26,17 +30,18 @@ public class LocalSearch {
         this.totalJobs=jobs.size();
         this.bestCost = Double.MAX_VALUE;
     }
-    public double deepestDescend(LinkedList<Job>newJobList){
+    public void deepestDescend(LinkedList<Job>newJobList){
         LinkedList<LinkedList<Job>>bestSolutions = new LinkedList<>();
         LinkedList<LinkedList<SetupChange>>bestSetups = new LinkedList<>();
+        for(int count =0; count<150;count++){
             for (int i = 0; i < newJobList.size() - 1; i++) {
                 LinkedList<Job> curJobOrder = new LinkedList<>();
                 curJobOrder.addAll(newJobList);
                 Collections.swap(curJobOrder, i, i + 1);
-                LinkedList<Job>copyJobOrder = new LinkedList<>(List.copyOf(curJobOrder));
+                LinkedList<Job> copyJobOrder = new LinkedList<>(List.copyOf(curJobOrder));
                 cleanProject();
                 Job fj = curJobOrder.get(0);
-                setTimeIndex(fj.getDueDate()-fj.getDuration());
+                setTimeIndex(fj.getDueDate() - fj.getDuration());
                 addJob(fj, null);
                 curJobOrder.remove(0);
                 Job lastJob = fj;
@@ -47,7 +52,7 @@ public class LocalSearch {
                     int dueDate = job.getDueDate();
                     int jobId = job.getId();
                     int releaseDate = job.getReleaseDate();
-                    if (releaseDate < timeIndex + setupTime) {
+                    if (releaseDate <= timeIndex) {
                         if (un.checkAvailable(timeIndex, timeIndex + setupTime + jobTime)) {
                             if (timeIndex + jobTime + setupTime <= dueDate) {
                                 addJob(job, lastJob);
@@ -79,31 +84,32 @@ public class LocalSearch {
                         LinkedList<Job> dueDateList = new LinkedList<>(List.copyOf(curJobOrder));
                         Collections.sort(dueDateList, Comparator.comparing(Job::getDueDate));
                         Job firstDue = dueDateList.get(0);
-                        if (firstDue.getReleaseDate() > timeIndex && releaseDateList.indexOf(firstDue)<2) {
+                        if (firstDue.getReleaseDate() > timeIndex && releaseDateList.indexOf(firstDue) < 2) {
                             int id = firstDue.getId();
-                            int executeTime = firstDue.getDueDate()-firstDue.getDuration()-getSetupTime(firstDue,lastJob);
+                            int executeTime = firstDue.getDueDate() - firstDue.getDuration() - getSetupTime(firstDue, lastJob);
                             setTimeIndex(executeTime);
                             Collections.swap(curJobOrder, 0, curJobOrder.indexOf(firstDue));
-                        }else{
-                            setTimeIndex(releaseDateList.get(0).getReleaseDate());
-                            Collections.swap(curJobOrder, 0, curJobOrder.indexOf(firstDue));
+                        } else {
+                            Collections.swap(curJobOrder, 0, curJobOrder.indexOf(releaseDateList.get(0)));
+                            if(firstDue.getDueDate()<timeIndex){
+                                curJobOrder.remove(firstDue);
+                            }
                         }
-
-                    }
-                }
+                  }
+            }
                 double cost = evaluate(scheduled);
                 if (cost < bestCost) {
                     setBestSolution(getScheduled());
                     setBestSetupList(getSetupList());
-                    bestCost = cost;
-                    System.out.println("BETERE OPLS" + cost);
+                    setBestCost(cost);
+                    System.out.println("BETERE OPLS" + cost+"    "+count);
                     bestSetups.add(new LinkedList<>(List.copyOf(setupList)));
                     bestSolutions.add(new LinkedList<>(List.copyOf(scheduled)));
                     setJobList(copyJobOrder);
-                    return bestCost;
+                    setJSONFormat();
                 }
+            }
         }
-        return 0;
     }
 
     public void setBestSetupList(LinkedList<SetupChange> bestSetupList) {
@@ -120,6 +126,39 @@ public class LocalSearch {
 
     public LinkedList<SetupChange> getBestSetupList() {
         return bestSetupList;
+    }
+    public void setJSONFormat(){
+        JSONObject finalSolution = new JSONObject();
+        JSONArray jsonSetups = new JSONArray();
+        List<SetupChange>setupChanges = getSetupList();
+        for(SetupChange setupChange : setupChanges){
+            JSONObject jsonSetup = new JSONObject();
+            jsonSetup.put("from",setupChange.getJ1().getId());
+            jsonSetup.put("to",setupChange.getJ2().getId());
+            jsonSetup.put("start",setupChange.getStart());
+            jsonSetups.put(jsonSetup);
+        }
+        finalSolution.put("setups",jsonSetups);
+        JSONArray array = new JSONArray();
+        for(Job job : scheduled){
+            JSONObject jsonJob = new JSONObject();
+            jsonJob.put("id",job.getId());
+            jsonJob.put("start",job.getStart());
+            array.put(jsonJob);
+        }
+        finalSolution.put("jobs",array);
+        this.JSONSolution = finalSolution;
+    }
+    public JSONObject getJSONFormat(){
+        return this.JSONSolution;
+    }
+
+    public void setBestCost(double bestCost) {
+        this.bestCost = bestCost;
+    }
+
+    public double getBestCost() {
+        return bestCost;
     }
 
     public void addJob(Job currentJob, Job lastJob){
