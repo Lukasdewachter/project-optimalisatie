@@ -12,7 +12,7 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Object obj = new JSONParser().parse(new FileReader("./IO/B-400-90.json"));
+        Object obj = new JSONParser().parse(new FileReader("./IO/A-400-90.json"));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -48,19 +48,22 @@ public class Main {
                 setups[i][j] = (int) s.getJSONArray(i).get(j);
             }
         }
-        Solution solution = new Solution(jobs, weightDuration, setups, un);
-        LinkedList<Job>firstSolution = (LinkedList<Job>) solution.firstSolution();
-        LinkedList<Job>jobList = solution.getJobList(firstSolution);
-        LocalSearch ls = new LocalSearch(jobList, setups, un, weightDuration);
-        ls.deepestDescend(jobList);
-        JSONObject finalSolution = ls.getJSONFormat();
-        double evaluation=ls.getBestCost();
+        FirstSolution solution = new FirstSolution(jobs, weightDuration, setups, un,horizon);
+        LinkedList<Job>test = solution.firstSolution2();
+        SteepestDescend sd = new SteepestDescend(jobs,test, solution.getSetupList(),setups,un,weightDuration,horizon,solution.getBestCost());
+        JSONObject finalSolution = sd.getJSONSolution();
+        double evaluation=sd.getBestCost();
         finalSolution.put("name",name);
         finalSolution.put("value",evaluation);
         FileWriter fw = new FileWriter("./IO/solution-"+name+".json");
         fw.write(finalSolution.toString(4));
         fw.flush();
+        /*LocalSearch ls = new LocalSearch(jobList, setups, un, weightDuration);
+        ls.deepestDescend();
+
+        JSONObject finalSolution = ls.getJSONFormat();
+
         //System.out.println("Jobs: ");
-        //solution.print();
+        //solution.print();*/
     }
 }

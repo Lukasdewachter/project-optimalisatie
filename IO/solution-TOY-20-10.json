@@ -1,74 +1,99 @@
 {
     "setups": [
         {
-            "start": 96,
-            "from": 12,
-            "to": 6
-        },
-        {
-            "start": 130,
-            "from": 6,
-            "to": 3
-        },
-        {
-            "start": 165,
-            "from": 3,
-            "to": 13
-        },
-        {
-            "start": 197,
-            "from": 13,
-            "to": 11
-        },
-        {
-            "start": 1009,
-            "from": 11,
-            "to": 18
-        },
-        {
-            "start": 1030,
-            "from": 18,
-            "to": 2
-        },
-        {
-            "start": 1066,
-            "from": 2,
-            "to": 8
-        },
-        {
-            "start": 1098,
-            "from": 8,
-            "to": 16
-        },
-        {
-            "start": 1156,
-            "from": 16,
-            "to": 7
-        },
-        {
-            "start": 1202,
-            "from": 7,
-            "to": 10
-        },
-        {
-            "start": 1226,
-            "from": 10,
+            "start": 1364,
+            "from": 17,
             "to": 4
         },
         {
-            "start": 1248,
-            "from": 4,
-            "to": 15
+            "start": 1357,
+            "from": 14,
+            "to": 17
         },
         {
-            "start": 1295,
+            "start": 1349,
             "from": 15,
             "to": 14
         },
         {
-            "start": 1303,
-            "from": 14,
-            "to": 17
+            "start": 1260,
+            "from": 10,
+            "to": 15
+        },
+        {
+            "start": 1236,
+            "from": 7,
+            "to": 10
+        },
+        {
+            "start": 1193,
+            "from": 8,
+            "to": 7
+        },
+        {
+            "start": 1161,
+            "from": 16,
+            "to": 8
+        },
+        {
+            "start": 1104,
+            "from": 19,
+            "to": 16
+        },
+        {
+            "start": 1048,
+            "from": 2,
+            "to": 19
+        },
+        {
+            "start": 712,
+            "from": 18,
+            "to": 2
+        },
+        {
+            "start": 693,
+            "from": 9,
+            "to": 18
+        },
+        {
+            "start": 662,
+            "from": 0,
+            "to": 9
+        },
+        {
+            "start": 620,
+            "from": 11,
+            "to": 0
+        },
+        {
+            "start": 574,
+            "from": 5,
+            "to": 11
+        },
+        {
+            "start": 531,
+            "from": 13,
+            "to": 5
+        },
+        {
+            "start": 499,
+            "from": 1,
+            "to": 13
+        },
+        {
+            "start": 348,
+            "from": 3,
+            "to": 1
+        },
+        {
+            "start": 204,
+            "from": 6,
+            "to": 3
+        },
+        {
+            "start": 96,
+            "from": 12,
+            "to": 6
         }
     ],
     "jobs": [
@@ -77,62 +102,82 @@
             "id": 12
         },
         {
-            "start": 101,
+            "start": 175,
             "id": 6
         },
         {
-            "start": 136,
+            "start": 319,
             "id": 3
         },
         {
-            "start": 169,
+            "start": 460,
+            "id": 1
+        },
+        {
+            "start": 503,
             "id": 13
         },
         {
-            "start": 202,
+            "start": 536,
+            "id": 5
+        },
+        {
+            "start": 578,
             "id": 11
         },
         {
-            "start": 1014,
+            "start": 624,
+            "id": 0
+        },
+        {
+            "start": 664,
+            "id": 9
+        },
+        {
+            "start": 696,
             "id": 18
         },
         {
-            "start": 1037,
+            "start": 1019,
             "id": 2
         },
         {
-            "start": 1071,
-            "id": 8
+            "start": 1052,
+            "id": 19
         },
         {
-            "start": 1103,
+            "start": 1108,
             "id": 16
         },
         {
-            "start": 1161,
+            "start": 1166,
+            "id": 8
+        },
+        {
+            "start": 1195,
             "id": 7
         },
         {
-            "start": 1206,
+            "start": 1240,
             "id": 10
         },
         {
-            "start": 1228,
-            "id": 4
-        },
-        {
-            "start": 1254,
+            "start": 1308,
             "id": 15
         },
         {
-            "start": 1299,
+            "start": 1353,
             "id": 14
         },
         {
-            "start": 1306,
+            "start": 1360,
             "id": 17
+        },
+        {
+            "start": 1366,
+            "id": 4
         }
     ],
     "name": "TOY-20-10",
-    "value": 12505.46503034234
+    "value": 7629.113004468381
 }

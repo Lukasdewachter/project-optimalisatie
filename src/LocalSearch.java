@@ -1,7 +1,6 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.sound.sampled.Line;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -30,13 +29,14 @@ public class LocalSearch {
         this.totalJobs=jobs.size();
         this.bestCost = Double.MAX_VALUE;
     }
-    public void deepestDescend(LinkedList<Job>newJobList){
+    public void deepestDescend(){
         LinkedList<LinkedList<Job>>bestSolutions = new LinkedList<>();
         LinkedList<LinkedList<SetupChange>>bestSetups = new LinkedList<>();
+
         for(int count =0; count<150;count++){
-            for (int i = 0; i < newJobList.size() - 1; i++) {
+            for (int i = 0; i < jobList.size() - 1; i++) {
                 LinkedList<Job> curJobOrder = new LinkedList<>();
-                curJobOrder.addAll(newJobList);
+                curJobOrder.addAll(jobList);
                 Collections.swap(curJobOrder, i, i + 1);
                 LinkedList<Job> copyJobOrder = new LinkedList<>(List.copyOf(curJobOrder));
                 cleanProject();
@@ -47,6 +47,9 @@ public class LocalSearch {
                 Job lastJob = fj;
                 while (!curJobOrder.isEmpty()) {
                     Job job = curJobOrder.get(0);
+                    if(job.getId() == 28 && count==3 && i==7){
+                        System.out.println();
+                    }
                     int setupTime = getSetupTime(job, lastJob);
                     int jobTime = job.getDuration();
                     int dueDate = job.getDueDate();
@@ -99,12 +102,8 @@ public class LocalSearch {
             }
                 double cost = evaluate(scheduled);
                 if (cost < bestCost) {
-                    setBestSolution(getScheduled());
-                    setBestSetupList(getSetupList());
                     setBestCost(cost);
-                    System.out.println("BETERE OPLS" + cost+"    "+count);
-                    bestSetups.add(new LinkedList<>(List.copyOf(setupList)));
-                    bestSolutions.add(new LinkedList<>(List.copyOf(scheduled)));
+                    System.out.println("BETERE OPLS" + cost+"    "+count+"      "+i);
                     setJobList(copyJobOrder);
                     setJSONFormat();
                 }
@@ -130,7 +129,7 @@ public class LocalSearch {
     public void setJSONFormat(){
         JSONObject finalSolution = new JSONObject();
         JSONArray jsonSetups = new JSONArray();
-        List<SetupChange>setupChanges = getSetupList();
+        List<SetupChange>setupChanges = this.setupList;
         for(SetupChange setupChange : setupChanges){
             JSONObject jsonSetup = new JSONObject();
             jsonSetup.put("from",setupChange.getJ1().getId());
@@ -188,6 +187,9 @@ public class LocalSearch {
         scheduled.clear();
         setupList.clear();
         timeIndex=0;
+        for(Job j : jobList){
+            j.clean();
+        }
     }
 
     public LinkedList<Job> getScheduled() {
@@ -196,10 +198,6 @@ public class LocalSearch {
 
     public LinkedList<Job> getBestSolution() {
         return bestSolution;
-    }
-
-    public LinkedList<SetupChange> getSetupList() {
-        return setupList;
     }
 
     public double evaluate(LinkedList<Job> solutionJobs){
@@ -219,4 +217,10 @@ public class LocalSearch {
         double rejectionSum = sum-earlinesSum-weightedSum;
         return sum;
     }
+
+    List<SetupChange> getSetupList() {
+        return setupList;
+    }
+
+
 }

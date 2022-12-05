@@ -3,11 +3,11 @@ public class Job{
     private final int duration;
     private final int releaseDate;
     private final int dueDate;
-    private final float earlinessPenalty;
-    private final float rejectionPenalty;
+    private final double earlinessPenalty;
+    private final double rejectionPenalty;
 
     private int start=0, stop=0;
-    public Job(int id, int duration, int releaseDate, int dueDate, float earlinessPenalty, float rejectionPenalty){
+    public Job(int id, int duration, int releaseDate, int dueDate, double earlinessPenalty, double rejectionPenalty){
         this.id = id;
         this.duration = duration;
         this.releaseDate = releaseDate;
@@ -19,7 +19,10 @@ public class Job{
     public int getId() {
         return id;
     }
-
+    public void clean(){
+        setStart(0);
+        setStop(0);
+    }
     public void setStart(Integer start) {
         this.start = start;
     }
@@ -48,13 +51,15 @@ public class Job{
         return dueDate;
     }
 
-    public float getEarlinessPenalty() {
+    public double getEarlinessPenalty() {
         //returns the calculated earliness penalty
-        float time = getDueDate() - getStop()+1;
+        double time = getDueDate() - getStop()+1;
         return time * this.earlinessPenalty;
     }
-
-    public float getRejectionPenalty() {
+    public double calculateEarlinessPenalty(int stop){
+        return (getDueDate() - stop+1)*earlinessPenalty;
+    }
+    public double getRejectionPenalty() {
         return rejectionPenalty;
     }
 
