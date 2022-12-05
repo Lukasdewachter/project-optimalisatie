@@ -13,6 +13,19 @@ public class Unavailability {
             }else break;
         }
     }
+    public int getAvailableTime(int timeIndex){
+        int time = 0;
+        for(int i=timeIndex;i<un.length;i++){
+            if(un[i]){
+                time = i-1;
+                break;
+            }
+        }
+        if(time == 0 ){
+            time = un.length-1;
+        }
+        return time-timeIndex;
+    }
     public Boolean checkAvailable(int start, int end) {
         //checks if the range of time slots has unavailability
         boolean available = true;
@@ -33,6 +46,10 @@ public class Unavailability {
                 for(int j = i; j<un.length;j++){
                     if(!un[j]){
                         timeIndex = j;
+                        break;
+                    }
+                    if(j == un.length-1){
+                        timeIndex = j+1;
                         break;
                     }
                 }
