@@ -12,7 +12,12 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Object obj = new JSONParser().parse(new FileReader("./IO/TOY-20-10.json"));
+        //String inputFile = args[0];
+        //String solutionFile = args[1];
+        //int seed = Integer.parseInt(args[2]);
+        //int timeLimit = Integer.parseInt(args[3]);
+        //int threads = Integer.parseInt(args[4]);
+        Object obj = new JSONParser().parse(new FileReader("./IO/B-400-90.json"));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");

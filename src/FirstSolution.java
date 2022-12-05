@@ -109,8 +109,6 @@ public class FirstSolution {
                     setTimeIndex(dueDate);
                     addJob(job,prevJob);
                     prevJob = job;
-                }else{
-                    System.out.println("ttttttttt" + id);
                 }
             }
         }

@@ -15,7 +15,7 @@ public class SteepestDescend {
     private LinkedList<SetupChange>setupList,bestSetupList;
     private double bestCost, weightDuration;
     private Unavailability un;
-    private int timeIndex, totalJobs, totalTime;
+    private int timeIndex, totalJobs, totalTime, upgrades;
     private JSONObject JSONSolution;
     public SteepestDescend(LinkedList<Job>jobs,LinkedList<Job>solution,LinkedList<SetupChange>setupList, int[][]setups, Unavailability un, double weightDuration, int totalTime,double bestCost){
         notScheduled = new LinkedList<>();
@@ -35,12 +35,13 @@ public class SteepestDescend {
         this.bestSolution = new LinkedList<>(List.copyOf(scheduled));
         this.bestNotScheduled = new LinkedList<>(List.copyOf(notScheduled));
         this.bestSetupList = new LinkedList<>(List.copyOf(setupList));
+        this.upgrades =0;
         startLocalSearch();
     }
     public void startLocalSearch(){
         long t1 = System.currentTimeMillis();
-        System.out.println("[----0%----]");
-        for(int count = 0; count <10000000;count++) {
+        int iterations = 1000000;
+        for(int count = 0; count <iterations;count++) {
             Random random = new Random();
             int r = random.nextInt(3);
             switch (1) {
@@ -56,12 +57,13 @@ public class SteepestDescend {
                 default:
                     System.out.println("error in switch");
             }
-            if(count%100000 == 0){
-                System.out.print(count/100000+" duizend iteraties verstreken");
+            if(count%10000 == 0){
+                System.out.println("[----"+count/10000+"%----]");
             }
         }
         long t2 = System.currentTimeMillis();
-        System.out.println((t2-t1)/1000+" tijd verstreken");
+        System.out.println(((t2-t1)/60000)+"m "+((t2-t1)%60000)/1000 +"s verstreken");
+        System.out.println("Een gemiddelde van "+(iterations/100)/1000 +" duizend iteraties / seconde");
 
     }
     public void mixNeighbours(){
@@ -81,7 +83,8 @@ public class SteepestDescend {
             setBestSetupList(new LinkedList<>(List.copyOf(setupList)));
             //setJobList(copyOrder);
             setJSONFormat();
-
+            upgrades++;
+            System.out.println(upgrades + " betere oplossingen gevonden");
         }
         notScheduled.clear();
         setupList.clear();
@@ -158,8 +161,6 @@ public class SteepestDescend {
                     setTimeIndex(dueDate);
                     addJob(job,prevJob);
                     prevJob = job;
-                }else{
-                    System.out.println("error" + id);
                 }
             }
         }
