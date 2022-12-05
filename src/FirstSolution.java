@@ -3,7 +3,7 @@ import org.json.JSONObject;
 
 import java.util.*;
 
-public class Solution{
+public class FirstSolution {
     int numberOfJobs, timeIndex,horizon;
     //LinkedList<Job> solutionJobs = new LinkedList<>();
     LinkedList<Job> notScheduledJobs = new LinkedList<>();
@@ -13,16 +13,16 @@ public class Solution{
     double weightDuration;
     int[][] setups;
     Unavailability unavailability;
-    List<SetupChange>setupList;
+    LinkedList<SetupChange>setupList;
     JSONObject JSONSolution;
-    public Solution(LinkedList<Job> jobs, float weightDuration, int[][] setups, Unavailability unavailability, int horizon){
+    public FirstSolution(LinkedList<Job> jobs, float weightDuration, int[][] setups, Unavailability unavailability, int horizon){
         super();
         this.jobs=jobs;
         numberOfJobs = jobs.size();
         this.weightDuration=weightDuration;
         this.setups = setups;
         this.unavailability=unavailability;
-        setupList = new ArrayList<SetupChange>();
+        setupList = new LinkedList<>();
         this.scheduled = new LinkedList<>();
         this.horizon = horizon;
         this.JSONSolution = null;
@@ -85,9 +85,6 @@ public class Solution{
         for(int index = jobs.size()-2 ; index> -1;index--){
             Job job = jobs.get(index);
             int id = job.getId();
-            if(id==379){
-                System.out.println();
-            }
             int releaseDate = job.getReleaseDate();
             int dueDate = job.getDueDate();
             int duration = job.getDuration();
@@ -259,7 +256,7 @@ public class Solution{
         this.timeIndex -= timeIndex;
     }
 
-    public LinkedList<Job> deepestDescend(LinkedList<Job> jobOrder){
+    /* public LinkedList<Job> deepestDescend(LinkedList<Job> jobOrder){
         int timeIndex=0;
         LinkedList<Job>jobList = jobOrder;
         LinkedList<Job> bestSolution = new LinkedList<>(List.copyOf(jobOrder));
@@ -295,11 +292,11 @@ public class Solution{
                     int setupTime = getSetupTime(job, lastJob);
                     int jobTime = job.getDuration();
                     int dueDate = job.getDueDate();
-                /*
+
                     -checken of job al kan
                     -checken of er unavailability is
                     -checken of job optijd kan eindigen
-                */
+
                     if (job.getReleaseDate() < timeIndex + setupTime) {
                         if (unavailability.checkAvailable(timeIndex, timeIndex + setupTime + jobTime)) {
                             if (timeIndex + jobTime + setupTime < dueDate) {
@@ -375,7 +372,7 @@ public class Solution{
         this.setupList = List.copyOf(bestSetup);
         return bestSol;
     }
-
+*/
 
     public void setBestSolution(LinkedList<Job>solution){
         this.bestSol = solution;
@@ -406,7 +403,7 @@ public class Solution{
         notScheduledJobs.clear();
         this.jobs = jobs;
     }
-    public List<SetupChange> getSetupList() {
+    public LinkedList<SetupChange> getSetupList() {
         return setupList;
     }
     public int getSetupTime(Job curJob, Job prevJob){

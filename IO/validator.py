@@ -13,8 +13,8 @@ def __prepareargs__():
 
     ## add mutual exclusion so that ONE of two args are required
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('-s', nargs=1, type=str, help='Solution file (JSON).')
-    group.add_argument('-t', nargs=1, type=str, help='Solution string in JSON format.')
+    group.add_argument('-s', nargs=1, type=str, help='FirstSolution file (JSON).')
+    group.add_argument('-t', nargs=1, type=str, help='FirstSolution string in JSON format.')
 
     return parser
 
@@ -26,7 +26,7 @@ def __getargs__(parser):
 
 ## =======================================================================
 ## Below there are basic class definitions used throughout the validator.
-## This includes Period, Job, Solution and Instance.
+## This includes Period, Job, FirstSolution and Instance.
 ## =======================================================================
 
 class Period:
@@ -86,7 +86,7 @@ class SJob:
         self.id = id
         self.start = start
 
-class Solution:
+class FirstSolution:
     def __init__(self):
         self.inst_name = ""
         self.jobs = list()
@@ -253,7 +253,7 @@ class Validator:
 
             time = self.step_time(instance, i, j, dij, time)
             if tj < time:
-                self.add_error("Solution estimates start time of job %d at %d but the earliest feasible start time is at %d." % (j, tj, time))
+                self.add_error("FirstSolution estimates start time of job %d at %d but the earliest feasible start time is at %d." % (j, tj, time))
                 valid = False
 
             time = max(time, tj)
@@ -323,7 +323,7 @@ class Validator:
         valid = self.validate_sequence(instance, solution)
 
         if abs(solution.cost() - solution.of_read) > 0.009:
-            self.add_error("Solution cost reported is %.2f but I computed %.2f (rejection: %.2f + earliness: %.2f + duration: %.2f)" % (solution.of_read, solution.cost(), solution.pen_rejec, solution.pen_earl, solution.pen_dur))
+            self.add_error("FirstSolution cost reported is %.2f but I computed %.2f (rejection: %.2f + earliness: %.2f + duration: %.2f)" % (solution.of_read, solution.cost(), solution.pen_rejec, solution.pen_earl, solution.pen_dur))
             valid = False
 
         return valid
@@ -360,7 +360,7 @@ def load_instance(ipath):
 
 
 def load_solution_file(spath):
-    solution = Solution()
+    solution = FirstSolution()
     with open(spath) as sfile:
         try:
             js = json.load(sfile)
@@ -382,7 +382,7 @@ def load_solution_file(spath):
 
 
 def load_solution_str(sstr):
-    solution = Solution()
+    solution = FirstSolution()
     try:
         js = json.loads(sstr)
         solution.load_from_json(js)
