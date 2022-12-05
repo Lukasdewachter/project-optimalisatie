@@ -6,67 +6,92 @@
             "to": 6
         },
         {
-            "start": 130,
+            "start": 204,
             "from": 6,
             "to": 3
         },
         {
-            "start": 165,
+            "start": 348,
             "from": 3,
             "to": 13
         },
         {
-            "start": 197,
+            "start": 490,
             "from": 13,
             "to": 11
         },
         {
-            "start": 1009,
+            "start": 537,
             "from": 11,
+            "to": 9
+        },
+        {
+            "start": 568,
+            "from": 9,
+            "to": 1
+        },
+        {
+            "start": 611,
+            "from": 1,
+            "to": 0
+        },
+        {
+            "start": 651,
+            "from": 0,
             "to": 18
         },
         {
-            "start": 1030,
+            "start": 672,
             "from": 18,
+            "to": 5
+        },
+        {
+            "start": 715,
+            "from": 5,
             "to": 2
         },
         {
-            "start": 1066,
+            "start": 1045,
             "from": 2,
+            "to": 19
+        },
+        {
+            "start": 1101,
+            "from": 19,
             "to": 8
         },
         {
-            "start": 1098,
+            "start": 1132,
             "from": 8,
             "to": 16
         },
         {
-            "start": 1156,
+            "start": 1190,
             "from": 16,
             "to": 7
         },
         {
-            "start": 1202,
+            "start": 1236,
             "from": 7,
             "to": 10
         },
         {
-            "start": 1226,
+            "start": 1260,
             "from": 10,
             "to": 4
         },
         {
-            "start": 1248,
+            "start": 1345,
             "from": 4,
             "to": 15
         },
         {
-            "start": 1295,
+            "start": 1392,
             "from": 15,
             "to": 14
         },
         {
-            "start": 1303,
+            "start": 1433,
             "from": 14,
             "to": 17
         }
@@ -77,62 +102,82 @@
             "id": 12
         },
         {
-            "start": 101,
+            "start": 175,
             "id": 6
         },
         {
-            "start": 136,
+            "start": 319,
             "id": 3
         },
         {
-            "start": 169,
+            "start": 462,
             "id": 13
         },
         {
-            "start": 202,
+            "start": 495,
             "id": 11
         },
         {
-            "start": 1014,
+            "start": 539,
+            "id": 9
+        },
+        {
+            "start": 572,
+            "id": 1
+        },
+        {
+            "start": 613,
+            "id": 0
+        },
+        {
+            "start": 656,
             "id": 18
         },
         {
-            "start": 1037,
+            "start": 677,
+            "id": 5
+        },
+        {
+            "start": 1016,
             "id": 2
         },
         {
-            "start": 1071,
+            "start": 1049,
+            "id": 19
+        },
+        {
+            "start": 1105,
             "id": 8
         },
         {
-            "start": 1103,
+            "start": 1137,
             "id": 16
         },
         {
-            "start": 1161,
+            "start": 1195,
             "id": 7
         },
         {
-            "start": 1206,
+            "start": 1240,
             "id": 10
         },
         {
-            "start": 1228,
+            "start": 1325,
             "id": 4
         },
         {
-            "start": 1254,
+            "start": 1351,
             "id": 15
         },
         {
-            "start": 1299,
+            "start": 1429,
             "id": 14
         },
         {
-            "start": 1306,
+            "start": 1436,
             "id": 17
         }
     ],
     "name": "TOY-20-10",
-    "value": 12505.46503034234
+    "value": 7963.187010265887
 }

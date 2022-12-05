@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class Unavailability {
     private Boolean[] un;
     public Unavailability(int horizon){
-        un = new Boolean[horizon];
+        un = new Boolean[horizon+1];
         Arrays.fill(un, false);
     }
     public void addUnavailable(int start, int end){
@@ -12,6 +12,34 @@ public class Unavailability {
                 un[i] = true;
             }else break;
         }
+    }
+    public int getAvailableTime2(int timeIndex){
+        int time = 0;
+        for(int i=timeIndex;i > -1 ;i--){
+            if(un[i]){
+                time = i+1;
+                break;
+            }
+        }
+        return timeIndex-time;
+    }
+    public int getAvailable(int timeIndex){
+        for(int i=timeIndex; i> -1 ;i--){
+            if(un[i]){
+                for(int j = i; j > -1 ;j--){
+                    if(!un[j]){
+                        timeIndex = j;
+                        break;
+                    }
+                    if(j == 0){
+                        timeIndex = j-1;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return timeIndex;
     }
     public int getAvailableTime(int timeIndex){
         int time = 0;

@@ -8,6 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DeepestDescend {
+    /*
+    * kijken wat beste switch is
+    *
+    *
+    *
+    */
     private LinkedList<Job> scheduled,notScheduled,jobList;
     private int[][]setups;
     private LinkedList<SetupChange>setupList;
@@ -125,7 +131,6 @@ public class DeepestDescend {
         }
         return cost;
     }
-
     public void addJob(Job currentJob, Job lastJob){
         if(lastJob!=null){
             SetupChange setupChange = new SetupChange(lastJob,currentJob,timeIndex);
