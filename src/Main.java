@@ -49,7 +49,7 @@ public class Main {
             }
         }
         FirstSolution solution = new FirstSolution(jobs, weightDuration, setups, un,horizon);
-        LinkedList<Job>test = solution.firstSolution2();
+        LinkedList<Job>test = solution.firstSolution();
         SteepestDescend sd = new SteepestDescend(jobs,test, solution.getSetupList(),setups,un,weightDuration,horizon,solution.getBestCost());
         JSONObject finalSolution = sd.getJSONSolution();
         double evaluation=sd.getBestCost();
@@ -58,12 +58,5 @@ public class Main {
         FileWriter fw = new FileWriter("./IO/solution-"+name+".json");
         fw.write(finalSolution.toString(4));
         fw.flush();
-        /*LocalSearch ls = new LocalSearch(jobList, setups, un, weightDuration);
-        ls.deepestDescend();
-
-        JSONObject finalSolution = ls.getJSONFormat();
-
-        //System.out.println("Jobs: ");
-        //solution.print();*/
     }
 }
