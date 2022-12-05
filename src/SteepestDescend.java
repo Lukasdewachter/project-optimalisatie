@@ -39,7 +39,8 @@ public class SteepestDescend {
     }
     public void startLocalSearch(){
         long t1 = System.currentTimeMillis();
-        for(int count = 0; count <1000000;count++) {
+        System.out.println("[----0%----]");
+        for(int count = 0; count <10000000;count++) {
             Random random = new Random();
             int r = random.nextInt(3);
             switch (1) {
@@ -55,8 +56,8 @@ public class SteepestDescend {
                 default:
                     System.out.println("error in switch");
             }
-            if(count%1000 == 0){
-                System.out.println(count/1000+" duizend iteraties verstreken");
+            if(count%100000 == 0){
+                System.out.print(count/100000+" duizend iteraties verstreken");
             }
         }
         long t2 = System.currentTimeMillis();
@@ -108,7 +109,7 @@ public class SteepestDescend {
             setTimeIndex(time);
         }
         Job prevJob = firstJob;
-        addJob2(firstJob,null);
+        addJob(firstJob,null);
         for(int index = order.size()-2 ; index> -1;index--){
             Job job = order.get(index);
             int id = job.getId();
@@ -121,7 +122,7 @@ public class SteepestDescend {
             if(timeToUnavailable >= duration + setupTime){
                 //job feasable
                 if(dueDate>= timeIndex && releaseDate<= timeIndex-setupTime-duration){
-                    addJob2(job,prevJob);
+                    addJob(job,prevJob);
                     prevJob = job;
                 }
                 else if(releaseDate>timeIndex-setupTime-duration){
@@ -134,12 +135,12 @@ public class SteepestDescend {
                         int time = un.getAvailable(timeIndex);
                         setTimeIndex(time);
                     }
-                    addJob2(job,prevJob);
+                    addJob(job,prevJob);
                     prevJob = job;
                 }
                 else{
                     setTimeIndex(dueDate);
-                    addJob2(job,prevJob);
+                    addJob(job,prevJob);
                     prevJob = job;
                 }
             }else{
@@ -147,7 +148,7 @@ public class SteepestDescend {
                 int temp = un.getAvailable(timeIndex);
                 setTimeIndex(temp);
                 if(dueDate>= timeIndex && releaseDate<= timeIndex-setupTime-duration){
-                    addJob2(job,prevJob);
+                    addJob(job,prevJob);
                     prevJob = job;
                 }
                 else if(releaseDate>timeIndex-setupTime-duration){
@@ -155,7 +156,7 @@ public class SteepestDescend {
                 }
                 else if(dueDate < timeIndex){
                     setTimeIndex(dueDate);
-                    addJob2(job,prevJob);
+                    addJob(job,prevJob);
                     prevJob = job;
                 }else{
                     System.out.println("error" + id);
@@ -166,22 +167,7 @@ public class SteepestDescend {
         return evaluate(scheduled);
     }
 
-    public double calculateJobCost(Job job,Job lastJob, LinkedList<Job>jobs){
-        int jobTime = job.getDuration();
-        int setupChange = getSetupTime(job,lastJob);
-        double cal = weightDuration*(jobTime+setupChange);
-        double cal2 = job.calculateEarlinessPenalty(timeIndex+jobTime+setupChange);
-        double cost = weightDuration*(jobTime+setupChange) + job.calculateEarlinessPenalty(timeIndex+jobTime+setupChange);
-        for(Job j : jobs){
-            if(j.getId() != job.getId()){
-                if(j.getDueDate()<=timeIndex+jobTime+setupChange){
-                    cost += j.getRejectionPenalty();
-                }
-            }
-        }
-        return cost;
-    }
-    public void addJob2(Job fj, Job pj){
+    public void addJob(Job fj, Job pj){
         if(pj != null){
             int setupTime = getSetupTime(fj, pj);
             SetupChange sc = new SetupChange(fj,pj,timeIndex-setupTime);
@@ -192,17 +178,6 @@ public class SteepestDescend {
         decreaseTimeIndex(fj.getDuration());
         fj.setStart(timeIndex);
         scheduled.add(fj);
-    }
-    public void addJob(Job currentJob, Job lastJob){
-        if(lastJob!=null){
-            SetupChange setupChange = new SetupChange(lastJob,currentJob,timeIndex);
-            setupList.add(setupChange);
-            increaseTime(getSetupTime(currentJob,lastJob));
-        }
-        currentJob.setStart(timeIndex);
-        increaseTime(currentJob.getDuration());
-        currentJob.setStop(timeIndex);
-        scheduled.add(currentJob);
     }
 
     public void setBestSolution(LinkedList<Job> bestSolution) {
@@ -218,13 +193,7 @@ public class SteepestDescend {
     public void decreaseTimeIndex(int time){
         this.timeIndex-=time;
     }
-    public void increaseTime(int time){
-        this.timeIndex+=time;
-    }
-    public void setJobList(LinkedList<Job> order) {
-        jobList.clear();
-        jobList.addAll(order);
-    }
+
 
     public double evaluate(LinkedList<Job> solutionJobs){
         double sum =0;
