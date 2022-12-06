@@ -19,7 +19,7 @@ public class Main {
         int seed = Integer.parseInt(args[2]);
         int timeLimit = Integer.parseInt(args[3]);
         int threads = Integer.parseInt(args[4]);
-        Object obj = new JSONParser().parse(new FileReader("./IO/"+inputFile));
+        Object obj = new JSONParser().parse(new FileReader("./"+inputFile));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -58,21 +58,29 @@ public class Main {
         FirstSolution solution = new FirstSolution(jobs, weightDuration, setups, un,horizon);
         LinkedList<Job>test = solution.firstSolution();
         long startTime =  System.currentTimeMillis();
-        SteepestDescend sd = new SteepestDescend(jobs,test, solution.getSetupList(),setups,un,weightDuration,horizon,solution.getBestCost(),timeLimit);;
+        SteepestDescend sd = new SteepestDescend(jobs,test, solution.getSetupList(),setups,un,weightDuration,horizon,solution.getBestCost());;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 Boolean running = true;
-
+                int timePerBar=(timeLimit*1000)/100;
+                int barCount=1;
                 while(running){
                     if(System.currentTimeMillis() - startTime> timeLimit*1000){
                         running = false;
                     }
-                    sd.mixNeighbours();
+                    int temp = timePerBar*barCount;
+                    if((System.currentTimeMillis() - startTime) > temp) {
+                        System.out.print("[" + barCount + "%]");
+                        barCount++;
+                    }
+                    sd.startLocalSearch();
                 }
+                System.out.println();
             }
         });
         thread.run();
+
         JSONObject finalSolution = sd.getJSONSolution();
         double evaluation=sd.getBestCost();
         finalSolution.put("name",name);
@@ -81,6 +89,7 @@ public class Main {
         fw.write(finalSolution.toString(4));
         fw.flush();
         long t2 = System.currentTimeMillis();
+        sd.getActions();
         System.out.println("Executed in: "+(t2-t1)/1000+"s.  Best cost: "+evaluation);
     }
 }
