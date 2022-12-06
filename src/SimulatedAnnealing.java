@@ -1,4 +1,6 @@
-/*import java.util.*;
+/*
+Didnt have the time
+import java.util.*;
 
 public class SimulatedAnnealing {
     Solution currentSolution;
