@@ -15,9 +15,9 @@ public class SteepestDescend {
     private LinkedList<SetupChange>setupList,bestSetupList;
     private double bestCost, weightDuration;
     private Unavailability un;
-    private int timeIndex, totalJobs, totalTime, upgrades;
+    private int timeIndex, totalJobs, totalTime, upgrades,stopTime;
     private JSONObject JSONSolution;
-    public SteepestDescend(LinkedList<Job>jobs,LinkedList<Job>solution,LinkedList<SetupChange>setupList, int[][]setups, Unavailability un, double weightDuration, int totalTime,double bestCost){
+    public SteepestDescend(LinkedList<Job>jobs,LinkedList<Job>solution,LinkedList<SetupChange>setupList, int[][]setups, Unavailability un, double weightDuration, int totalTime,double bestCost,int stopTime){
         notScheduled = new LinkedList<>();
         for(Job j : jobs){
             if(!solution.contains(j))notScheduled.add(j);
@@ -36,7 +36,7 @@ public class SteepestDescend {
         this.bestNotScheduled = new LinkedList<>(List.copyOf(notScheduled));
         this.bestSetupList = new LinkedList<>(List.copyOf(setupList));
         this.upgrades =0;
-        startLocalSearch();
+        this.stopTime = stopTime;
     }
     public void startLocalSearch(){
         long t1 = System.currentTimeMillis();
@@ -84,7 +84,6 @@ public class SteepestDescend {
             //setJobList(copyOrder);
             setJSONFormat();
             upgrades++;
-            System.out.println(upgrades + " betere oplossingen gevonden");
         }
         notScheduled.clear();
         setupList.clear();

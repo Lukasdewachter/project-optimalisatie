@@ -12,12 +12,14 @@ import org.json.simple.parser.JSONParser;
 */
 public class Main {
     public static void main(String[] args) throws Exception {
-        //String inputFile = args[0];
-        //String solutionFile = args[1];
-        //int seed = Integer.parseInt(args[2]);
-        //int timeLimit = Integer.parseInt(args[3]);
-        //int threads = Integer.parseInt(args[4]);
-        Object obj = new JSONParser().parse(new FileReader("./IO/B-400-90.json"));
+        //Als je error hebt moet je gwn alles met args[] in comment zetten
+        long t1 = System.currentTimeMillis();
+        String inputFile = args[0];
+        String solutionFile = args[1];
+        int seed = Integer.parseInt(args[2]);
+        int timeLimit = Integer.parseInt(args[3]);
+        int threads = Integer.parseInt(args[4]);
+        Object obj = new JSONParser().parse(new FileReader("./IO/"+inputFile));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -55,13 +57,30 @@ public class Main {
         }
         FirstSolution solution = new FirstSolution(jobs, weightDuration, setups, un,horizon);
         LinkedList<Job>test = solution.firstSolution();
-        SteepestDescend sd = new SteepestDescend(jobs,test, solution.getSetupList(),setups,un,weightDuration,horizon,solution.getBestCost());
+        long startTime =  System.currentTimeMillis();
+        SteepestDescend sd = new SteepestDescend(jobs,test, solution.getSetupList(),setups,un,weightDuration,horizon,solution.getBestCost(),timeLimit);;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean running = true;
+
+                while(running){
+                    if(System.currentTimeMillis() - startTime> timeLimit*1000){
+                        running = false;
+                    }
+                    sd.mixNeighbours();
+                }
+            }
+        });
+        thread.run();
         JSONObject finalSolution = sd.getJSONSolution();
         double evaluation=sd.getBestCost();
         finalSolution.put("name",name);
         finalSolution.put("value",evaluation);
-        FileWriter fw = new FileWriter("./IO/solution-"+name+".json");
+        FileWriter fw = new FileWriter("./"+solutionFile);
         fw.write(finalSolution.toString(4));
         fw.flush();
+        long t2 = System.currentTimeMillis();
+        System.out.println("Executed in: "+(t2-t1)/1000+"s.  Best cost: "+evaluation);
     }
 }
