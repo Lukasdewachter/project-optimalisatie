@@ -78,6 +78,7 @@ public class Main {
                     }
                     sd.startLocalSearch();
                 }
+                System.out.println();
                 System.out.println("Iterations: "+iterations);
             }
         });
