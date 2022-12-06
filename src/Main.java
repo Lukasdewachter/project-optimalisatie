@@ -19,7 +19,7 @@ public class Main {
         int seed = Integer.parseInt(args[2]);
         int timeLimit = Integer.parseInt(args[3]);
         int threads = Integer.parseInt(args[4]);
-        Object obj = new JSONParser().parse(new FileReader("./"+inputFile));
+        Object obj = new JSONParser().parse(new FileReader("./IO/"+inputFile));
         JSONTokener tokener = new JSONTokener(String.valueOf(obj));
         JSONObject object = new JSONObject(tokener);
         String name = object.getString("name");
@@ -65,7 +65,9 @@ public class Main {
                 Boolean running = true;
                 int timePerBar=(timeLimit*1000)/100;
                 int barCount=1;
+                int iterations=0;
                 while(running){
+                    iterations++;
                     if(System.currentTimeMillis() - startTime> timeLimit*1000){
                         running = false;
                     }
@@ -76,7 +78,7 @@ public class Main {
                     }
                     sd.startLocalSearch();
                 }
-                System.out.println();
+                System.out.println("Iterations: "+iterations);
             }
         });
         thread.run();
@@ -85,7 +87,7 @@ public class Main {
         double evaluation=sd.getBestCost();
         finalSolution.put("name",name);
         finalSolution.put("value",evaluation);
-        FileWriter fw = new FileWriter("./"+solutionFile);
+        FileWriter fw = new FileWriter("./IO/"+solutionFile);
         fw.write(finalSolution.toString(4));
         fw.flush();
         long t2 = System.currentTimeMillis();

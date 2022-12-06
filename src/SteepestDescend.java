@@ -41,7 +41,7 @@ public class SteepestDescend {
     }
     public void startLocalSearch() {
         Random random = new Random();
-        int[] f = {0,1,2};
+        int[] f = {0,1,2,0,0};
         int r = random.nextInt(f.length);
         switch (f[r]) {
             case 0:
